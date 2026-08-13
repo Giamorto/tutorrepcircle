@@ -133,7 +133,7 @@
   .chip{display:inline-flex;align-items:center;gap:.4em;font-size:.76rem;font-weight:700;border:2px solid var(--ink);border-radius:999px;padding:.3em .8em;background:#fff}
   .chip-o{background:var(--orange-soft)} .chip-t{background:var(--teal-soft)} .chip-y{background:#fff3bf}
   #labSvg,#miniSvg{width:100%;height:auto;display:block;touch-action:none}
-  .pt{cursor:grab} .pt:active{cursor:grabbing}
+  .pt{cursor:grab;touch-action:none;-webkit-user-select:none;user-select:none} .pt:active{cursor:grabbing}
   .pt .hit{fill:transparent}
   .pt .dot{fill:#fff;stroke:var(--ink);stroke-width:3.5;transition:fill .15s}
   .pt:hover .dot{fill:var(--sun)}
