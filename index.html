@@ -629,7 +629,9 @@ const caseCopy={
     f:'∠A + ∠C = 180°',n:'Следствие №3: противоположные углы вписанного четырёхугольника в сумме дают 180°.'}
 };
 function miniBuild(mode){
-  MINI.mode=mode;const svg=$('#miniSvg');let h=`<circle cx="170" cy="170" r="${MR}" fill="#fff" stroke="#15224e" stroke-width="3"/>`;
+  MINI.mode=mode;
+  if(mode==='quad') MINI.q=[100,200,280,20];
+  const svg=$('#miniSvg');let h=`<circle cx="170" cy="170" r="${MR}" fill="#fff" stroke="#15224e" stroke-width="3"/>`;
   if(mode==='dia'){
     h+=`<line id="mAB" x1="${f1(mp(180).x)}" y1="170" x2="${f1(mp(0).x)}" y2="170" stroke="#15224e" stroke-width="3"/>
         <line id="mCA" stroke="#15224e" stroke-width="2.4"/><line id="mCB" stroke="#15224e" stroke-width="2.4"/>
