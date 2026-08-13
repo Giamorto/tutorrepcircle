@@ -846,7 +846,7 @@ $('#btnSol').addEventListener('click',()=>{
 $('#btnNext').addEventListener('click',newTask);
 $('#btnNew').addEventListener('click',newTask);
 $$('input[name="diff"]').forEach(r=>r.addEventListener('change',newTask));
-newTask();
+// newTask(); // Убран автозапуск при загрузке, чтобы не скроллило страницу
 
 /* ============ reveals ============ */
 const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}}),{threshold:.12});
