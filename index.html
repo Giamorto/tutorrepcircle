@@ -513,7 +513,8 @@ function wedgeD(v,p1,p2,r,target){
   } else if(dd>180){start=a2;delta=360-dd;}
   const s={x:v.x+r*Math.cos(start),y:v.y+r*Math.sin(start)};
   const e={x:v.x+r*Math.cos(start+rad(delta)),y:v.y+r*Math.sin(start+rad(delta))};
-  return{d:`M ${f1(v.x)} ${f1(v.y)} L ${f1(s.x)} ${f1(s.y)} A ${r} ${r} 0 ${delta>180?1:0} 1 ${f1(e.x)} ${f1(e.y)} Z`,value:delta};
+  const mid=start+rad(delta)/2;
+  return{d:`M ${f1(v.x)} ${f1(v.y)} L ${f1(s.x)} ${f1(s.y)} A ${r} ${r} 0 ${delta>180?1:0} 1 ${f1(e.x)} ${f1(e.y)} Z`,value:delta,mid};
 }
 function svgPt(svg,e){const pt=svg.createSVGPoint();pt.x=e.clientX;pt.y=e.clientY;return pt.matrixTransform(svg.getScreenCTM().inverse());}
 
@@ -645,6 +646,8 @@ function miniBuild(mode){
   }else{
     h+=`<polygon id="mPoly" fill="rgba(244,96,12,.06)" stroke="#15224e" stroke-width="2.4"/>
         <path id="mQAW" fill="#f4600c" opacity=".85"/><path id="mQCW" fill="#0c86a8" opacity=".85"/>
+        <text id="mQAt" class="vt" fill="#b23e00" text-anchor="middle" dominant-baseline="middle"></text>
+        <text id="mQCt" class="vt" fill="#085d75" text-anchor="middle" dominant-baseline="middle"></text>
         ${mPt('mQA','A')}${mPt('mQB','B')}${mPt('mQC','C')}${mPt('mQD','D')}`;
   }
   svg.innerHTML=h;miniUpdate();
@@ -677,8 +680,12 @@ function miniUpdate(){
       const angA=Math.round(angBetween(pts[3],pts[0],pts[1]));
       // Угол C: между B-C-D
       const angC=Math.round(angBetween(pts[1],pts[2],pts[3]));
-      $('#mQAW').setAttribute('d',wedgeD(pts[0],pts[3],pts[1],30).d);
-      $('#mQCW').setAttribute('d',wedgeD(pts[2],pts[1],pts[3],30).d);
+      const wA=wedgeD(pts[0],pts[3],pts[1],30),wC=wedgeD(pts[2],pts[1],pts[3],30);
+      $('#mQAW').setAttribute('d',wA.d);
+      $('#mQCW').setAttribute('d',wC.d);
+      const lr=46;
+      $('#mQAt').setAttribute('x',f1(pts[0].x+lr*Math.cos(wA.mid)));$('#mQAt').setAttribute('y',f1(pts[0].y+lr*Math.sin(wA.mid)));$('#mQAt').textContent=angA+'°';
+      $('#mQCt').setAttribute('x',f1(pts[2].x+lr*Math.cos(wC.mid)));$('#mQCt').setAttribute('y',f1(pts[2].y+lr*Math.sin(wC.mid)));$('#mQCt').textContent=angC+'°';
       out.innerHTML=`∠A = <b>${angA}°</b>, ∠C = <b>${angC}°</b> → сумма <b>${angA+angC}°</b>`;
     }
   }
