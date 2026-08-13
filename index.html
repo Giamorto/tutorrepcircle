@@ -1,0 +1,856 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Центральные и вписанные углы — интерактивный урок</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📐</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;900&family=Golos+Text:wght@400;500;600;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#f3f6fb; --ink:#15224e; --ink-soft:#44507b;
+    --orange:#f4600c; --orange-d:#d14e00; --orange-soft:#ffe6d3;
+    --teal:#0c86a8; --teal-d:#0b6f8b; --teal-soft:#d9f1f7;
+    --sun:#ffd43b; --green:#1c9e57; --red:#e2483d;
+    --board:#1e4d3b; --chalk:#f2f7ef; --wood:#c8955c;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth;scroll-padding-top:86px}
+  body{
+    font-family:'Golos Text',system-ui,sans-serif;color:var(--ink);line-height:1.55;
+    background-color:var(--paper);
+    background-image:
+      linear-gradient(rgba(37,78,166,.07) 1px,transparent 1px),
+      linear-gradient(90deg,rgba(37,78,166,.07) 1px,transparent 1px),
+      linear-gradient(rgba(37,78,166,.13) 1px,transparent 1px),
+      linear-gradient(90deg,rgba(37,78,166,.13) 1px,transparent 1px);
+    background-size:24px 24px,24px 24px,120px 120px,120px 120px;
+    overflow-x:hidden;
+  }
+  ::selection{background:var(--sun);color:var(--ink)}
+  .container{max-width:1180px;margin:0 auto;padding:0 24px}
+  h1,h2,h3{font-family:'Unbounded',sans-serif}
+  svg text{user-select:none}
+
+  /* ---------- NAV ---------- */
+  nav{position:sticky;top:0;z-index:60;background:var(--paper);border-bottom:3px solid var(--ink)}
+  .nav-in{display:flex;align-items:center;gap:22px;padding:12px 24px;max-width:1180px;margin:0 auto}
+  .brand{display:flex;align-items:center;gap:10px;font-family:'Unbounded';font-weight:700;font-size:.95rem;letter-spacing:.04em;text-decoration:none;color:var(--ink)}
+  .brand svg{display:block}
+  .nav-links{display:flex;gap:4px;margin-left:auto;flex-wrap:wrap}
+  .nav-links a{font-weight:600;font-size:.9rem;color:var(--ink);text-decoration:none;padding:.45em .8em;border-radius:8px;transition:.18s}
+  .nav-links a:hover{background:var(--sun);transform:translateY(-1px)}
+  .nav-cta{background:var(--orange);color:#fff !important;border:2px solid var(--ink);box-shadow:3px 3px 0 var(--ink);border-radius:10px;font-weight:700}
+  .nav-cta:hover{background:var(--orange) !important;transform:translate(-1px,-2px);box-shadow:4px 5px 0 var(--ink)}
+
+  /* ---------- OPENING ---------- */
+  header.open{padding:64px 0 70px;position:relative}
+  .open-grid{display:grid;grid-template-columns:1.15fr .95fr;gap:52px;align-items:center}
+  .kicker{display:inline-flex;align-items:center;gap:.6em;background:#fff;border:2px solid var(--ink);box-shadow:4px 4px 0 var(--ink);padding:.4em .9em;font-weight:700;font-size:.8rem;letter-spacing:.08em;text-transform:uppercase;border-radius:8px}
+  .kicker i{width:10px;height:10px;border-radius:50%;background:var(--orange);display:inline-block;animation:pulse 1.6s infinite}
+  @keyframes pulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(.55);opacity:.5}}
+  h1{font-weight:900;font-size:clamp(2.2rem,4.7vw,4.2rem);line-height:1.06;margin:1.2rem 0 1.1rem;letter-spacing:-.01em}
+  .hl{background:linear-gradient(transparent 42%,var(--sun) 42%,var(--sun) 94%,transparent 94%);padding:0 .12em}
+  .hl-t{background:linear-gradient(transparent 42%,var(--teal-soft) 42%,var(--teal-soft) 94%,transparent 94%);padding:0 .12em}
+  .lead{max-width:46ch;font-size:1.08rem;color:var(--ink-soft)}
+  .open-btns{display:flex;gap:14px;margin-top:28px;flex-wrap:wrap}
+  .btn{display:inline-flex;align-items:center;gap:.5em;font-family:'Golos Text';font-weight:700;font-size:1rem;
+    padding:.75em 1.25em;border:2.5px solid var(--ink);border-radius:12px;background:#fff;color:var(--ink);
+    box-shadow:5px 5px 0 var(--ink);cursor:pointer;text-decoration:none;transition:transform .15s,box-shadow .15s}
+  .btn:hover{transform:translate(-2px,-2px);box-shadow:7px 7px 0 var(--ink)}
+  .btn:active{transform:translate(2px,2px);box-shadow:2px 2px 0 var(--ink)}
+  .btn-o{background:var(--orange);color:#fff}
+  .btn-t{background:var(--teal);color:#fff}
+  .btn-ink{background:var(--ink);color:#fff}
+  .btn-g{box-shadow:none;background:transparent;text-decoration:underline dotted;font-weight:600}
+  .btn-g:hover{box-shadow:none;background:var(--sun);transform:none}
+  .scroll-hint{margin-top:22px;font-size:.85rem;color:var(--ink-soft);font-weight:500}
+  .demo-card{background:#fff;border:3px solid var(--ink);border-radius:20px;box-shadow:11px 11px 0 var(--ink);padding:16px 16px 14px;position:relative}
+  .live{position:absolute;top:-14px;left:18px;background:var(--red);color:#fff;font-family:'Unbounded';font-size:.68rem;font-weight:700;letter-spacing:.14em;padding:.35em .8em;border:2px solid var(--ink);border-radius:8px;z-index:2}
+  .live::before{content:"●";margin-right:.5em;animation:pulse 1.2s infinite}
+  .demo-card svg{width:100%;height:auto;display:block}
+  .demo-vals{display:flex;gap:10px;margin-top:10px;flex-wrap:wrap}
+  .dval{flex:1;min-width:130px;border:2.5px solid;font-family:'JetBrains Mono';font-weight:700;font-size:1rem;text-align:center;padding:.5em .4em;border-radius:10px;background:#fff}
+  .dval.o{border-color:var(--orange);color:var(--orange-d)}
+  .dval.t{border-color:var(--teal);color:var(--teal-d)}
+  .demo-cap{font-size:.8rem;color:var(--ink-soft);text-align:center;margin-top:8px}
+
+  /* ---------- TAPE ---------- */
+  .tape{background:var(--ink);color:#fff;overflow:hidden;transform:rotate(-1.2deg) scale(1.03);border-block:3px solid var(--ink)}
+  .tape-in{display:flex;width:max-content;animation:slide 26s linear infinite}
+  .tape-in span{font-family:'Unbounded';font-weight:500;font-size:.82rem;letter-spacing:.18em;padding:.6em 0;white-space:nowrap}
+  .tape b{color:var(--sun);padding:0 .8em}
+  @keyframes slide{to{transform:translateX(-50%)}}
+
+  /* ---------- SECTIONS ---------- */
+  section{padding:88px 0;position:relative}
+  .sec-head{display:flex;align-items:flex-end;gap:22px;margin-bottom:38px;flex-wrap:wrap}
+  .sec-num{font-family:'Unbounded';font-weight:900;font-size:2.6rem;line-height:1;background:var(--ink);color:var(--sun);padding:.14em .3em;transform:rotate(-3deg);border-radius:8px;box-shadow:4px 4px 0 rgba(21,34,78,.25)}
+  .sec-head h2{font-size:clamp(1.55rem,3vw,2.35rem);font-weight:800;line-height:1.12}
+  .sec-head p{width:100%;color:var(--ink-soft);max-width:70ch;font-size:1.02rem}
+
+  .doodle{position:absolute;pointer-events:none;font-family:'Unbounded';font-weight:900;color:transparent;-webkit-text-stroke:2px rgba(21,34,78,.09);z-index:0;animation:float 9s ease-in-out infinite}
+  @keyframes float{0%,100%{transform:translateY(0) rotate(var(--r,0deg))}50%{transform:translateY(-18px) rotate(var(--r,0deg))}}
+
+  .card{background:#fff;border:3px solid var(--ink);border-radius:16px;position:relative}
+  .reveal{opacity:0;transform:translateY(28px);transition:opacity .7s cubic-bezier(.2,.7,.2,1),transform .7s cubic-bezier(.2,.7,.2,1)}
+  .reveal.in{opacity:1;transform:none}
+
+  /* ---------- THEORY ---------- */
+  .def-grid{display:grid;grid-template-columns:1fr 1fr;gap:28px}
+  .def{padding:28px;box-shadow:8px 8px 0 rgba(21,34,78,.14);transition:transform .25s,box-shadow .25s;overflow:hidden}
+  .def::before{content:"";position:absolute;top:0;left:0;right:0;height:9px;border-radius:13px 13px 0 0}
+  .def.o::before{background:var(--orange)} .def.t::before{background:var(--teal)}
+  .def:hover{transform:translateY(-6px) rotate(-.4deg);box-shadow:11px 13px 0 rgba(21,34,78,.2)}
+  .def h3{font-size:1.15rem;margin-bottom:14px;display:flex;align-items:center;gap:.6em}
+  .def h3 .sq{width:16px;height:16px;border:2.5px solid var(--ink);display:inline-block;transform:rotate(45deg)}
+  .def.o .sq{background:var(--orange)} .def.t .sq{background:var(--teal)}
+  .def .fig{float:right;margin:0 0 10px 18px;transition:transform .3s}
+  .def:hover .fig{transform:scale(1.05) rotate(1.5deg)}
+  .def p{margin-bottom:.7rem}
+  .fact{border:2px dashed var(--ink);border-radius:10px;padding:.7em .9em;font-size:.93rem;background:var(--paper);clear:both}
+  .arc-note{margin-top:28px;border:3px dashed var(--ink);border-radius:16px;background:#fffdf2;padding:20px 26px;display:flex;gap:20px;align-items:center;flex-wrap:wrap}
+  .arc-note .big{font-family:'JetBrains Mono';font-weight:700;font-size:1.25rem;color:var(--orange-d);white-space:nowrap}
+
+  /* ---------- BOARD ---------- */
+  .board{margin-top:36px;background:var(--board);color:var(--chalk);border:12px solid var(--wood);outline:3px solid var(--ink);border-radius:22px;padding:42px 44px;box-shadow:12px 12px 0 rgba(21,34,78,.85);
+    background-image:repeating-linear-gradient(0deg,rgba(255,255,255,.025) 0 2px,transparent 2px 4px)}
+  .board .kicker{background:transparent;color:var(--chalk);border-color:var(--chalk);box-shadow:3px 3px 0 rgba(242,247,239,.35)}
+  .board h3{font-size:clamp(1.3rem,2.4vw,1.9rem);margin:16px 0 12px}
+  .board .formula{font-family:'Unbounded';font-weight:700;font-size:clamp(1.5rem,3.4vw,2.6rem);color:var(--sun);margin:18px 0;text-shadow:0 0 14px rgba(255,212,59,.35)}
+  .board p{max-width:64ch;opacity:.94}
+  .board details{margin-top:20px;border-top:2px dashed rgba(242,247,239,.4);padding-top:16px}
+  .board summary{cursor:pointer;font-weight:700;text-decoration:underline dotted var(--sun);text-underline-offset:4px}
+  .board ol{margin:14px 0 0 22px;display:grid;gap:.5rem;max-width:70ch}
+  .board li::marker{color:var(--sun);font-weight:700}
+
+  /* ---------- LAB ---------- */
+  .lab-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:30px;align-items:start}
+  .lab-canvas{padding:14px;box-shadow:10px 10px 0 var(--ink)}
+  .lab-top{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px}
+  .chip{display:inline-flex;align-items:center;gap:.4em;font-size:.76rem;font-weight:700;border:2px solid var(--ink);border-radius:999px;padding:.3em .8em;background:#fff}
+  .chip-o{background:var(--orange-soft)} .chip-t{background:var(--teal-soft)} .chip-y{background:#fff3bf}
+  #labSvg,#miniSvg{width:100%;height:auto;display:block;touch-action:none}
+  .pt{cursor:grab} .pt:active{cursor:grabbing}
+  .pt .hit{fill:transparent}
+  .pt .dot{fill:#fff;stroke:var(--ink);stroke-width:3.5;transition:fill .15s}
+  .pt:hover .dot{fill:var(--sun)}
+  .ptl{font:700 19px 'Unbounded';fill:var(--ink);text-anchor:middle;paint-order:stroke;stroke:#fff;stroke-width:5px}
+  .vt{font:700 17px 'JetBrains Mono'}
+  .lab-side{display:grid;gap:14px}
+  .ro{display:flex;align-items:center;justify-content:space-between;gap:14px;background:#fff;border:3px solid var(--ink);border-radius:14px;padding:14px 18px;transition:transform .15s}
+  .ro:hover{transform:translateX(4px)}
+  .ro-l{font-size:.78rem;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-soft)}
+  .ro-v{font-family:'JetBrains Mono';font-weight:700;font-size:2rem;line-height:1}
+  .ro-c{border-left:12px solid var(--orange)} .ro-c .ro-v{color:var(--orange-d)}
+  .ro-i{border-left:12px solid var(--teal)} .ro-i .ro-v{color:var(--teal-d)}
+  .ro-a{border-left:12px solid var(--sun)}
+  .eq{background:var(--ink);color:#fff;border-radius:14px;padding:14px 18px;font-family:'JetBrains Mono';font-size:1.02rem;text-align:center;border:3px solid var(--ink)}
+  .eq b{color:var(--sun)}
+  .tgs{display:flex;gap:10px;flex-wrap:wrap}
+  .tg{position:relative}
+  .tg input{position:absolute;opacity:0;inset:0;cursor:pointer}
+  .tg span{display:inline-flex;align-items:center;gap:.5em;border:2.5px solid var(--ink);border-radius:999px;padding:.45em 1em;font-weight:700;font-size:.85rem;background:#fff;transition:.15s;cursor:pointer}
+  .tg span::before{content:"";width:11px;height:11px;border:2px solid var(--ink);border-radius:3px;background:#fff;transition:.15s}
+  .tg input:checked+span{background:var(--sun)}
+  .tg input:checked+span::before{background:var(--ink)}
+  .presets{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .preset{border:2.5px solid var(--ink);background:#fff;border-radius:10px;padding:.6em .5em;font-weight:700;font-size:.86rem;cursor:pointer;box-shadow:3px 3px 0 rgba(21,34,78,.5);transition:.15s;font-family:'Golos Text'}
+  .preset:hover{background:var(--teal-soft);transform:translate(-1px,-2px);box-shadow:4px 5px 0 rgba(21,34,78,.5)}
+  .preset:active{transform:translate(2px,2px);box-shadow:1px 1px 0 rgba(21,34,78,.5)}
+  .lab-note{border:2.5px dashed var(--ink);border-radius:12px;background:#fffdf2;padding:12px 16px;font-size:.92rem}
+
+  /* ---------- CASES ---------- */
+  .tabs{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:26px}
+  .tab{font-family:'Unbounded';font-weight:700;font-size:.86rem;border:2.5px solid var(--ink);background:#fff;border-radius:12px;padding:.7em 1.2em;cursor:pointer;box-shadow:4px 4px 0 rgba(21,34,78,.5);transition:.15s}
+  .tab:hover{transform:translate(-1px,-2px)}
+  .tab.active{background:var(--ink);color:var(--sun);box-shadow:4px 4px 0 var(--orange)}
+  .case-grid{display:grid;grid-template-columns:1fr 1fr;gap:30px;align-items:stretch}
+  .case-canvas{padding:16px;box-shadow:8px 8px 0 rgba(21,34,78,.16);display:flex;flex-direction:column;gap:10px}
+  .mini-out{border:2.5px solid var(--ink);border-radius:12px;background:var(--paper);padding:12px 16px;font-family:'JetBrains Mono';font-weight:700;font-size:1rem;text-align:center}
+  .mini-out b{color:var(--teal-d)}
+  .case-text{padding:30px;box-shadow:8px 8px 0 rgba(21,34,78,.16)}
+  .case-text h3{font-size:1.25rem;margin-bottom:14px}
+  .case-text p{margin-bottom:14px;color:var(--ink-soft)}
+  .case-formula{display:inline-block;font-family:'JetBrains Mono';font-weight:700;font-size:1.3rem;background:var(--sun);border:2.5px solid var(--ink);padding:.35em .8em;border-radius:10px;box-shadow:4px 4px 0 var(--ink);transform:rotate(-1deg)}
+
+  /* ---------- PRACTICE ---------- */
+  .prac-grid{display:grid;grid-template-columns:320px 1fr;gap:30px;align-items:start}
+  .p-set{padding:24px;box-shadow:8px 8px 0 rgba(21,34,78,.16);display:grid;gap:18px}
+  .p-set h3{font-size:1rem}
+  .diff-row{display:grid;gap:8px}
+  .diff{position:relative}
+  .diff input{position:absolute;opacity:0}
+  .diff span{display:flex;justify-content:space-between;align-items:center;border:2.5px solid var(--ink);border-radius:10px;padding:.6em .9em;font-weight:700;font-size:.9rem;cursor:pointer;background:#fff;transition:.15s}
+  .diff small{font-weight:500;color:var(--ink-soft)}
+  .diff input:checked+span{background:var(--ink);color:#fff}
+  .diff input:checked+span small{color:var(--sun)}
+  .score{border-top:2px dashed var(--ink);padding-top:14px;display:grid;gap:6px;font-size:.92rem}
+  .score b{font-family:'JetBrains Mono';font-size:1.05rem}
+  .w100{width:100%;justify-content:center}
+  .p-card{padding:28px;box-shadow:10px 10px 0 var(--ink);transition:outline .3s}
+  .p-card.win{animation:winpulse .8s}
+  @keyframes winpulse{0%{box-shadow:10px 10px 0 var(--ink)}40%{box-shadow:10px 10px 0 var(--green);outline:4px solid var(--green)}100%{box-shadow:10px 10px 0 var(--ink)}}
+  .p-head{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:16px}
+  .p-num{font-family:'Unbounded';font-weight:800;font-size:1rem;background:var(--ink);color:#fff;padding:.3em .7em;border-radius:8px}
+  .p-text{font-size:1.14rem;max-width:56ch;margin-bottom:18px}
+  .p-text b{color:var(--teal-d)}
+  .p-fig{display:flex;justify-content:center;margin:6px 0 20px}
+  .tsvg{width:min(310px,100%);height:auto}
+  .fl{font:800 14px 'Golos Text'} .fv{font:700 15px 'JetBrains Mono'}
+  .p-ans{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+  .p-ans label{font-weight:700;display:flex;align-items:center;gap:10px}
+  #ansInp{font-family:'JetBrains Mono';font-weight:700;font-size:1.25rem;width:130px;padding:.45em .6em;border:3px solid var(--ink);border-radius:10px;background:#fff;text-align:center;transition:.15s}
+  #ansInp:focus{outline:none;border-color:var(--orange);box-shadow:4px 4px 0 var(--orange)}
+  #ansInp.shake{animation:shake .4s}
+  @keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-8px)}40%{transform:translateX(8px)}60%{transform:translateX(-6px)}80%{transform:translateX(6px)}}
+  .p-fb{margin-top:20px;display:grid;gap:10px}
+  .fb-ok{background:#e6f7ee;border:2.5px solid var(--green);color:#116b3c;border-radius:12px;padding:12px 16px;font-weight:800;font-size:1.05rem}
+  .fb-bad{background:#fdeceb;border:2.5px solid var(--red);color:#a3271d;border-radius:12px;padding:12px 16px;font-weight:700}
+  .fb-hint{background:#fff8dd;border:2.5px dashed var(--orange);border-radius:12px;padding:12px 16px;font-size:.95rem}
+  .fb-exp,.fb-sol{background:var(--paper);border:2.5px solid var(--ink);border-radius:12px;padding:12px 16px;font-size:.97rem}
+  .fb-sol b,.fb-exp b{color:var(--teal-d)}
+
+  /* ---------- CHEATSHEET / FOOTER ---------- */
+  .cheat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+  .cheat{background:#fff;border:3px solid var(--ink);border-radius:14px;padding:20px;box-shadow:6px 6px 0 rgba(21,34,78,.16);transition:.2s}
+  .cheat:hover{transform:translateY(-5px) rotate(-.6deg);box-shadow:8px 10px 0 rgba(21,34,78,.22)}
+  .cheat .g{font-family:'Unbounded';font-weight:900;font-size:1.7rem;display:block;margin-bottom:8px}
+  .cheat:nth-child(1){border-top:10px solid var(--orange)} .cheat:nth-child(2){border-top:10px solid var(--teal)}
+  .cheat:nth-child(3){border-top:10px solid var(--sun)} .cheat:nth-child(4){border-top:10px solid var(--green)}
+  footer{border-top:3px solid var(--ink);padding:34px 0;text-align:center;color:var(--ink-soft);font-size:.9rem;background:#fff}
+  footer b{color:var(--ink)}
+
+  @media(max-width:960px){
+    .open-grid,.lab-grid,.case-grid,.prac-grid,.def-grid{grid-template-columns:1fr}
+    .cheat-grid{grid-template-columns:1fr 1fr}
+    .nav-links a:not(.nav-cta){display:none}
+    .demo-card{max-width:480px}
+    .board{padding:28px 22px}
+    .def .fig{float:none;margin:0 auto 14px;display:block}
+  }
+  @media(max-width:560px){.cheat-grid{grid-template-columns:1fr}.ro-v{font-size:1.6rem}}
+  @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-in">
+    <a class="brand" href="#">
+      <svg width="30" height="30" viewBox="0 0 30 30"><circle cx="15" cy="15" r="12" fill="none" stroke="#15224e" stroke-width="2.5"/><path d="M15 15 L26 11 M15 15 L24 22" stroke="#f4600c" stroke-width="2.5" stroke-linecap="round"/></svg>
+      УГЛЫ&nbsp;В&nbsp;ОКРУЖНОСТИ
+    </a>
+    <div class="nav-links">
+      <a href="#theory">Теория</a>
+      <a href="#lab">Лаборатория</a>
+      <a href="#cases">Следствия</a>
+      <a href="#practice" class="nav-cta">Задачи →</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ======================= OPENING ======================= -->
+<header class="open">
+  <div class="container open-grid">
+    <div>
+      <span class="kicker"><i></i> Геометрия окружности · 8–9 класс</span>
+      <h1>Центральные<br>и <span class="hl">вписанные</span> углы</h1>
+      <p class="lead">Одна окружность, два вида углов — и между ними железная связь: <b>вписанный угол всегда ровно вдвое меньше центрального</b>, если они смотрят на одну дугу. Ниже это можно потрогать руками.</p>
+      <div class="open-btns">
+        <a href="#lab" class="btn btn-o">🖐 К интерактиву</a>
+        <a href="#practice" class="btn btn-ink">🎲 Генератор задач</a>
+      </div>
+      <p class="scroll-hint">↓ листайте — дальше всё можно двигать, вращать и проверять</p>
+    </div>
+    <div class="demo-card">
+      <span class="live">LIVE</span>
+      <svg id="demoSvg" viewBox="0 0 400 400"></svg>
+      <div class="demo-vals">
+        <div class="dval o">∠AOB = <span id="demoC">110°</span></div>
+        <div class="dval t">∠ACB = <span id="demoI">55°</span></div>
+      </div>
+      <p class="demo-cap">эта картинка живая — а ниже можно двигать всё самому</p>
+    </div>
+  </div>
+</header>
+
+<div class="tape"><div class="tape-in" id="tapeIn">
+  <span>ЦЕНТРАЛЬНЫЙ УГОЛ<b>∠</b>ДУГА<b>∠</b>ХОРДА<b>∠</b>РАДИУС<b>∠</b>ВПИСАННЫЙ УГОЛ<b>∠</b>½ ЦЕНТРАЛЬНОГО<b>∠</b>ТЕОРЕМА<b>∠</b></span>
+  <span>ЦЕНТРАЛЬНЫЙ УГОЛ<b>∠</b>ДУГА<b>∠</b>ХОРДА<b>∠</b>РАДИУС<b>∠</b>ВПИСАННЫЙ УГОЛ<b>∠</b>½ ЦЕНТРАЛЬНОГО<b>∠</b>ТЕОРЕМА<b>∠</b></span>
+</div></div>
+
+<!-- ======================= THEORY ======================= -->
+<section id="theory">
+  <span class="doodle" style="top:30px;right:2%;font-size:9rem;--r:12deg">∠</span>
+  <div class="container">
+    <div class="sec-head reveal">
+      <span class="sec-num">01</span>
+      <h2>Разминка: два определения</h2>
+      <p>Всё начинается с того, <em>где стоит вершина угла</em>. В центре окружности — один случай, на самой окружности — другой.</p>
+    </div>
+    <div class="def-grid">
+      <div class="card def o reveal">
+        <h3><span class="sq"></span>Центральный угол</h3>
+        <svg class="fig" width="180" height="180" viewBox="0 0 180 180">
+          <circle cx="90" cy="90" r="70" fill="#fff" stroke="#15224e" stroke-width="2.5"/>
+          <path d="M90 90 L155 62 A70 70 0 0 1 148 125 Z" fill="#f4600c" opacity=".8"/>
+          <path d="M155 62 A70 70 0 0 1 148 125" fill="none" stroke="#d14e00" stroke-width="6" stroke-linecap="round"/>
+          <line x1="90" y1="90" x2="155" y2="62" stroke="#15224e" stroke-width="2"/>
+          <line x1="90" y1="90" x2="148" y2="125" stroke="#15224e" stroke-width="2"/>
+          <circle cx="90" cy="90" r="4" fill="#15224e"/><circle cx="155" cy="62" r="4" fill="#15224e"/><circle cx="148" cy="125" r="4" fill="#15224e"/>
+          <text x="118" y="98" font-family="JetBrains Mono" font-weight="700" font-size="13" fill="#d14e00">α</text>
+        </svg>
+        <p>Угол, у которого <span class="hl">вершина совпадает с центром</span> окружности, а стороны — два радиуса.</p>
+        <div class="fact">📏 Градусная мера центрального угла <b>равна мере дуги</b>, которую он вырезает: ∠AOB = ⌢AB.</div>
+      </div>
+      <div class="card def t reveal" style="transition-delay:.12s">
+        <h3><span class="sq"></span>Вписанный угол</h3>
+        <svg class="fig" width="180" height="180" viewBox="0 0 180 180">
+          <circle cx="90" cy="90" r="70" fill="#fff" stroke="#15224e" stroke-width="2.5"/>
+          <path d="M155 62 A70 70 0 0 1 148 125" fill="none" stroke="#d14e00" stroke-width="5" stroke-linecap="round" opacity=".55"/>
+          <path d="M45 148 L155 62 M45 148 L148 125" stroke="#15224e" stroke-width="2"/>
+          <path d="M45 148 L65.5 132 A26 26 0 0 1 70.4 142.3 Z" fill="#0c86a8" opacity=".85"/>
+          <circle cx="45" cy="148" r="4" fill="#15224e"/><circle cx="155" cy="62" r="4" fill="#15224e"/><circle cx="148" cy="125" r="4" fill="#15224e"/>
+          <text x="84" y="131" font-family="JetBrains Mono" font-weight="700" font-size="13" fill="#0b6f8b">β</text>
+        </svg>
+        <p>Угол, у которого <span class="hl-t">вершина лежит на окружности</span>, а стороны пересекают её (это хорды).</p>
+        <div class="fact">📏 Вписанный угол измеряется <b>половиной дуги</b>, на которую он опирается: ∠ACB = ½·⌢AB.</div>
+      </div>
+    </div>
+    <div class="arc-note reveal">
+      <span class="big">⌢AB = AOB</span>
+      <p>Дугу измеряют в градусах так же, как вырезающий её центральный угол. Оранжевая дуга на картинках выше «принадлежит» обоим углам — именно она связывает их между собой.</p>
+    </div>
+
+    <div class="board reveal">
+      <span class="kicker">главная теорема темы</span>
+      <h3>Теорема о вписанном угле</h3>
+      <p>Вписанный угол равен <b>половине</b> центрального угла, опирающегося на ту же дугу. И наоборот: центральный вдвое больше вписанного.</p>
+      <div class="formula">∠ACB = ½ · ∠AOB</div>
+      <details>
+        <summary>Почему это так? (эскиз доказательства)</summary>
+        <ol>
+          <li>Проведём через вершину вписанного угла диаметр — он разобьёт угол на два.</li>
+          <li>Каждый кусочек вместе с центром образует <b>равнобедренный треугольник</b> (два радиуса равны!) — из него легко видно, что вписанный кусочек вдвое меньше своего центрального.</li>
+          <li>Сложим два кусочка — теорема доказана для любого положения точек.</li>
+        </ol>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= LAB ======================= -->
+<section id="lab">
+  <span class="doodle" style="top:60px;left:-1%;font-size:11rem;--r:-9deg">°</span>
+  <div class="container">
+    <div class="sec-head reveal">
+      <span class="sec-num">02</span>
+      <h2>Лаборатория углов</h2>
+      <p>Хватайте точки <b>A</b>, <b>B</b> и <b>C</b> и таскайте их по окружности. Оранжевый клин — центральный угол, бирюзовый — вписанный. Смотрите, что происходит с числами справа. Все углы snapping к целым градусам.</p>
+    </div>
+    <div class="lab-grid">
+      <div class="card lab-canvas reveal">
+        <div class="lab-top">
+          <span class="chip">✋ точки перетаскиваются</span>
+          <span class="chip chip-o">■ центральный</span>
+          <span class="chip chip-t">■ вписанный</span>
+        </div>
+        <svg id="labSvg" viewBox="0 0 620 620">
+          <circle cx="310" cy="310" r="230" fill="#fff" stroke="#15224e" stroke-width="3.5"/>
+          <path id="labArcHi" fill="none" stroke="#f4600c" stroke-width="9" stroke-linecap="round" opacity=".9"/>
+          <g id="gRadii" stroke="#15224e" stroke-width="2" stroke-dasharray="6 7" opacity=".65">
+            <line id="rOA" x1="310" y1="310"/><line id="rOB" x1="310" y1="310"/><line id="rOC" x1="310" y1="310"/>
+          </g>
+          <g stroke="#15224e" stroke-width="2.6" stroke-linecap="round">
+            <line id="chCA"/><line id="chCB"/>
+          </g>
+          <path id="labCW" fill="#f4600c" opacity=".82"/>
+          <path id="labIW" fill="#0c86a8" opacity=".82"/>
+          <circle cx="310" cy="310" r="4" fill="#15224e"/>
+          <text x="322" y="332" class="ptl" style="font-size:16px">O</text>
+          <g id="gVals">
+            <text id="labCT" class="vt" fill="#b34300" text-anchor="middle"></text>
+            <text id="labIT" class="vt" fill="#085d75" text-anchor="middle"></text>
+          </g>
+          <g class="pt" id="gA"><circle class="hit" r="26"/><circle class="dot" r="11"/><text class="ptl">A</text></g>
+          <g class="pt" id="gB"><circle class="hit" r="26"/><circle class="dot" r="11"/><text class="ptl">B</text></g>
+          <g class="pt" id="gC"><circle class="hit" r="26"/><circle class="dot" r="11" stroke="#0c86a8"/><text class="ptl">C</text></g>
+        </svg>
+      </div>
+      <div class="lab-side">
+        <div class="ro ro-c reveal"><span class="ro-l">Центральный ∠AOB</span><span class="ro-v" id="roC">–</span></div>
+        <div class="ro ro-i reveal" style="transition-delay:.08s"><span class="ro-l">Вписанный ∠ACB</span><span class="ro-v" id="roI">–</span></div>
+        <div class="ro ro-a reveal" style="transition-delay:.16s"><span class="ro-l">Дуга AB (без точки C)</span><span class="ro-v" id="roArc">–</span></div>
+        <div class="eq reveal" id="labEq" style="transition-delay:.22s">∠ACB = ½·∠AOB</div>
+        <div class="tgs reveal" style="transition-delay:.28s">
+          <label class="tg"><input type="checkbox" id="tgArc" checked><span>Дуга AB</span></label>
+          <label class="tg"><input type="checkbox" id="tgRad" checked><span>Радиусы</span></label>
+          <label class="tg"><input type="checkbox" id="tgVal" checked><span>Подписи углов</span></label>
+        </div>
+        <div class="presets reveal" style="transition-delay:.34s">
+          <button class="preset" data-m="60">Дуга 60°</button>
+          <button class="preset" data-m="90">Дуга 90°</button>
+          <button class="preset" data-m="140">Дуга 140°</button>
+          <button class="preset" data-m="260">Большая дуга 260°</button>
+          <button class="preset" id="btnShuffle" style="grid-column:1/-1">🎲 Случайное расположение</button>
+        </div>
+        <div class="lab-note reveal" id="labNote" style="transition-delay:.4s"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= CASES ======================= -->
+<section id="cases">
+  <div class="container">
+    <div class="sec-head reveal">
+      <span class="sec-num">03</span>
+      <h2>Три следствия-суперсилы</h2>
+      <p>Из теоремы «вписанный = половина центрального» следуют три факта, которые решают половину задач на окружность. Каждый можно проверить в мини-лаборатории.</p>
+    </div>
+    <div class="tabs reveal">
+      <button class="tab active" data-mode="dia">Диаметр → 90°</button>
+      <button class="tab" data-mode="arc">Одна дуга → равны</button>
+      <button class="tab" data-mode="quad">Четырёхугольник → 180°</button>
+    </div>
+    <div class="case-grid">
+      <div class="card case-canvas reveal">
+        <svg id="miniSvg" viewBox="0 0 340 340"></svg>
+        <div class="mini-out" id="miniOut"></div>
+      </div>
+      <div class="card case-text reveal" id="caseText" style="transition-delay:.1s"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= PRACTICE ======================= -->
+<section id="practice">
+  <span class="doodle" style="bottom:40px;right:0;font-size:10rem;--r:7deg">½</span>
+  <div class="container">
+    <div class="sec-head reveal">
+      <span class="sec-num">04</span>
+      <h2>Генератор задач</h2>
+      <p>Каждая задача — новая: углы и чертежи генерируются случайно. Введите ответ в градусах и проверьте себя. После двух ошибок появится подсказка.</p>
+    </div>
+    <div class="prac-grid">
+      <aside class="card p-set reveal">
+        <h3>⚙️ Сложность</h3>
+        <div class="diff-row">
+          <label class="diff"><input type="radio" name="diff" value="easy" checked><span>Легко <small>в 2 раза / ÷ 2</small></span></label>
+          <label class="diff"><input type="radio" name="diff" value="mid"><span>Средне <small>+ диаметр и дуги</small></span></label>
+          <label class="diff"><input type="radio" name="diff" value="hard"><span>Сложно <small>+ четырёхугольники</small></span></label>
+        </div>
+        <button class="btn btn-ink w100" id="btnNew">🎲 Новая задача</button>
+        <div class="score">
+          <span>✅ Решено верно: <b id="stSolved">0</b></span>
+          <span>🧮 Проверок: <b id="stTries">0</b></span>
+          <span>🔥 Серия: <b id="stStreak">0</b></span>
+          <span>🎯 Точность: <b id="stAcc">—</b></span>
+        </div>
+      </aside>
+      <div class="card p-card reveal" id="taskCard" style="transition-delay:.1s">
+        <div class="p-head">
+          <span class="p-num" id="taskNum">Задача №1</span>
+          <span class="chip chip-t" id="taskTag">…</span>
+          <span class="chip chip-y" id="taskDiff">легко</span>
+        </div>
+        <p class="p-text" id="taskText"></p>
+        <div class="p-fig" id="taskFig"></div>
+        <form class="p-ans" id="ansForm">
+          <label>Ответ: <input id="ansInp" inputmode="decimal" autocomplete="off" placeholder="…°"></label>
+          <button class="btn btn-o" type="submit" id="btnCheck">Проверить</button>
+          <button class="btn btn-g" type="button" id="btnSol">показать решение</button>
+          <button class="btn btn-t" type="button" id="btnNext" hidden>Следующая →</button>
+        </form>
+        <div class="p-fb" id="fb" hidden></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= CHEATSHEET ======================= -->
+<section id="cheat" style="padding-top:20px">
+  <div class="container">
+    <div class="sec-head reveal"><span class="sec-num">✂️</span><h2>Шпаргалка: что вырезать и приклеить в тетрадь</h2></div>
+    <div class="cheat-grid">
+      <div class="cheat reveal"><span class="g" style="color:var(--orange)">⌢=</span>Центральный угол равен мере дуги, которую он вырезает.</div>
+      <div class="cheat reveal" style="transition-delay:.08s"><span class="g" style="color:var(--teal)">½</span>Вписанный угол — половина центрального, опирающегося на ту же дугу.</div>
+      <div class="cheat reveal" style="transition-delay:.16s"><span class="g" style="color:#c99a00">90°</span>Вписанный угол, опирающийся на диаметр, — прямой.</div>
+      <div class="cheat reveal" style="transition-delay:.24s"><span class="g" style="color:var(--green)">180°</span>В вписанном четырёхугольнике противоположные углы в сумме дают 180°.</div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  Сделано с циркулем и линейкой · <b>Геометрия, 8 класс</b> · центральные и вписанные углы · 2026
+</footer>
+
+<script>
+'use strict';
+/* ============ helpers ============ */
+const $=s=>document.querySelector(s), $$=s=>document.querySelectorAll(s);
+const rad=d=>d*Math.PI/180, deg=r=>r*180/Math.PI;
+const norm360=a=>((a%360)+360)%360;
+const f1=n=>+n.toFixed(1);
+const rnd=(a,b)=>a+Math.floor(Math.random()*(b-a+1));
+const fmt=v=>{let r=Math.round(v*10)/10;if(Math.abs(r-Math.round(r))<.001)r=Math.round(r);return String(r).replace('.',',');};
+function P(cx,cy,r,aDeg){const t=rad(aDeg);return{x:cx+r*Math.cos(t),y:cy-r*Math.sin(t)};}
+function angDist(x,y){const d=Math.abs(norm360(x-y));return Math.min(d,360-d);}
+function angBetween(p,v,q){const a1=Math.atan2(p.y-v.y,p.x-v.x),a2=Math.atan2(q.y-v.y,q.x-v.x);let d=Math.abs(deg(a2-a1))%360;if(d>180)d=360-d;return d;}
+function arcD(cx,cy,r,aStart,m){const s=P(cx,cy,r,aStart),e=P(cx,cy,r,aStart+m);return `M ${f1(s.x)} ${f1(s.y)} A ${r} ${r} 0 ${m>180?1:0} 0 ${f1(e.x)} ${f1(e.y)}`;}
+function wedgeD(v,p1,p2,r,target){
+  const a1=Math.atan2(p1.y-v.y,p1.x-v.x),a2=Math.atan2(p2.y-v.y,p2.x-v.x);
+  const dd=norm360(deg(a2-a1));
+  let start=a1,delta=dd;
+  const dst=(x,y)=>{let z=Math.abs(norm360(x-y));return Math.min(z,360-z);};
+  if(target){
+    const at=deg(Math.atan2(target.y-v.y,target.x-v.x));
+    const mid1=norm360(deg(a1)+dd/2),mid2=norm360(mid1+180);
+    if(dst(mid2,at)<dst(mid1,at)){start=a2;delta=360-dd;}
+  } else if(dd>180){start=a2;delta=360-dd;}
+  const s={x:v.x+r*Math.cos(start),y:v.y+r*Math.sin(start)};
+  const e={x:v.x+r*Math.cos(start+rad(delta)),y:v.y+r*Math.sin(start+rad(delta))};
+  return{d:`M ${f1(v.x)} ${f1(v.y)} L ${f1(s.x)} ${f1(s.y)} A ${r} ${r} 0 ${delta>180?1:0} 1 ${f1(e.x)} ${f1(e.y)} Z`,value:delta};
+}
+function svgPt(svg,e){const pt=svg.createSVGPoint();pt.x=e.clientX;pt.y=e.clientY;return pt.matrixTransform(svg.getScreenCTM().inverse());}
+
+/* ============ MAIN LAB ============ */
+const LO={x:310,y:310},LR=230;
+const L={a:115,b:185,c:335};
+function placePt(g,p){
+  g.setAttribute('transform',`translate(${f1(p.x)},${f1(p.y)})`);
+  const u={x:(p.x-LO.x)/LR,y:(p.y-LO.y)/LR},t=g.querySelector('text');
+  t.setAttribute('x',f1(u.x*32));t.setAttribute('y',f1(u.y*32+7));
+}
+function labUpdate(){
+  const A=P(LO.x,LO.y,LR,L.a),B=P(LO.x,LO.y,LR,L.b),C=P(LO.x,LO.y,LR,L.c);
+  placePt($('#gA'),A);placePt($('#gB'),B);placePt($('#gC'),C);
+  const d=norm360(L.b-L.a),cp=norm360(L.c-L.a);
+  let start,m; if(cp<d){start=L.b;m=360-d;}else{start=L.a;m=d;}
+  const M=P(LO.x,LO.y,LR,start+m/2);
+  $('#labArcHi').setAttribute('d',arcD(LO.x,LO.y,LR,start,m));
+  $('#labCW').setAttribute('d',wedgeD(LO,A,B,54,M).d);
+  $('#labIW').setAttribute('d',wedgeD(C,A,B,48,M).d);
+  [['rOA',A],['rOB',B],['rOC',C]].forEach(([id,p])=>{const l=$('#'+id);l.setAttribute('x2',f1(p.x));l.setAttribute('y2',f1(p.y));});
+  [['chCA',A],['chCB',B]].forEach(([id,p])=>{const l=$('#'+id);l.setAttribute('x1',f1(C.x));l.setAttribute('y1',f1(C.y));l.setAttribute('x2',f1(p.x));l.setAttribute('y2',f1(p.y));});
+  const ct=P(LO.x,LO.y,92,start+m/2);
+  const ctEl=$('#labCT');ctEl.setAttribute('x',f1(ct.x));ctEl.setAttribute('y',f1(ct.y));ctEl.textContent=fmt(m)+'°';
+  const it={x:C.x+(M.x-C.x)*.42,y:C.y+(M.y-C.y)*.42};
+  const itEl=$('#labIT');itEl.setAttribute('x',f1(it.x));itEl.setAttribute('y',f1(it.y));itEl.textContent=fmt(m/2)+'°';
+  $('#roC').textContent=fmt(m)+'°';$('#roI').textContent=fmt(m/2)+'°';$('#roArc').textContent=fmt(m)+'°';
+  $('#labEq').innerHTML=`∠ACB = ½·∠AOB&nbsp;&nbsp;→&nbsp;&nbsp;<b>${fmt(m/2)}° = ½ · ${fmt(m)}°</b>`;
+  $('#labNote').innerHTML = m>180
+    ? '🧐 Дуга больше полуокружности — центральный угол стал больше 180°, а вписанный — тупым. Но правило «÷2» работает всё так же!'
+    : '👆 Подвигайте <b>C</b> по дальней дуге: вписанный угол не меняется! Теперь сдвиньте <b>A</b> или <b>B</b> — изменятся оба угла, но их отношение всегда равно 2.';
+}
+function setLab(a,m){L.a=norm360(a);L.b=norm360(a+m);L.c=norm360(a+m+20+(360-m)/2);labUpdate();}
+(function bindLab(){
+  const svg=$('#labSvg');let key=null;
+  const map={gA:'a',gB:'b',gC:'c'};
+  const move=e=>{
+    const p=svgPt(svg,e);
+    let ang=Math.round(norm360(deg(Math.atan2(-(p.y-LO.y),p.x-LO.x)))); // целые градусы
+    if(key==='c'){
+      if(angDist(ang,L.a)<7||angDist(ang,L.b)<7)return;
+      L.c=ang;
+    }else if(key==='a'){
+      if(angDist(ang,L.b)<7)return;
+      if(norm360(L.b-ang)%2)ang=norm360(ang+1); // дуга чётная → вписанный угол целый
+      if(angDist(ang,L.b)<7)return;
+      L.a=ang;
+    }else if(key==='b'){
+      if(angDist(ang,L.a)<7)return;
+      if(norm360(ang-L.a)%2)ang=norm360(ang+1);
+      if(angDist(ang,L.a)<7)return;
+      L.b=ang;
+    }
+    labUpdate();
+  };
+  svg.addEventListener('pointerdown',e=>{const g=e.target.closest('.pt');if(!g)return;key=map[g.id];svg.setPointerCapture(e.pointerId);move(e);});
+  svg.addEventListener('pointermove',e=>{if(key)move(e);});
+  ['pointerup','pointercancel'].forEach(ev=>svg.addEventListener(ev,()=>key=null));
+  $$('.preset[data-m]').forEach(b=>b.addEventListener('click',()=>setLab(L.a,+b.dataset.m)));
+  $('#btnShuffle').addEventListener('click',()=>setLab(rnd(0,359),2*rnd(25,125)));
+  $('#tgArc').addEventListener('change',e=>$('#labArcHi').style.display=e.target.checked?'':'none');
+  $('#tgRad').addEventListener('change',e=>$('#gRadii').style.display=e.target.checked?'':'none');
+  $('#tgVal').addEventListener('change',e=>$('#gVals').style.display=e.target.checked?'':'none');
+})();
+labUpdate();
+
+/* ============ HEADER DEMO ============ */
+(function demo(){
+  const O={x:200,y:200},R=148,svg=$('#demoSvg');
+  svg.innerHTML=`<circle cx="200" cy="200" r="${R}" fill="#fff" stroke="#15224e" stroke-width="3"/>
+    <path id="dArc" fill="none" stroke="#f4600c" stroke-width="6" stroke-linecap="round" opacity=".85"/>
+    <path id="dCW" fill="#f4600c" opacity=".8"/><path id="dIW" fill="#0c86a8" opacity=".85"/>
+    <g stroke="#15224e" stroke-width="2"><line id="dCA"/><line id="dCB"/><line id="dOA" stroke-dasharray="4 5" opacity=".6"/><line id="dOB" stroke-dasharray="4 5" opacity=".6"/></g>
+    <circle cx="200" cy="200" r="3.5" fill="#15224e"/>
+    <circle id="dDA" r="5" fill="#15224e"/><circle id="dDB" r="5" fill="#15224e"/><circle id="dDC" r="6" fill="#0c86a8"/>`;
+  function tick(ts){
+    const m=110+70*Math.sin(ts/950),a=205,b=a+m,c=25;
+    const A=P(O.x,O.y,R,a),B=P(O.x,O.y,R,b),C=P(O.x,O.y,R,c);
+    $('#dArc').setAttribute('d',arcD(O.x,O.y,R,a,m));
+    $('#dCW').setAttribute('d',wedgeD(O,A,B,36,P(O.x,O.y,R,a+m/2)).d);
+    $('#dIW').setAttribute('d',wedgeD(C,A,B,30,P(O.x,O.y,R,a+m/2)).d);
+    [['dCA',A],['dCB',B],['dOA',A],['dOB',B]].forEach(([id,p])=>{const l=$('#'+id);l.setAttribute('x1',id[1]==='O'?O.x:f1(C.x));l.setAttribute('y1',id[1]==='O'?O.y:f1(C.y));l.setAttribute('x2',f1(p.x));l.setAttribute('y2',f1(p.y));});
+    $('#dDA').setAttribute('cx',f1(A.x));$('#dDA').setAttribute('cy',f1(A.y));
+    $('#dDB').setAttribute('cx',f1(B.x));$('#dDB').setAttribute('cy',f1(B.y));
+    $('#dDC').setAttribute('cx',f1(C.x));$('#dDC').setAttribute('cy',f1(C.y));
+    $('#demoC').textContent=Math.round(m)+'°';
+    $('#demoI').textContent=Math.round(m/2)+'°';
+    requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+})();
+
+/* ============ MINI LAB (следствия) ============ */
+const MO={x:170,y:170},MR=128;
+const MINI={mode:'dia',c:90,c1:395,c2:500,q:[100,200,280,20]};
+const mp=a=>P(MO.x,MO.y,MR,a);
+const mPt=(id,l)=>`<g class="pt" id="${id}"><circle class="hit" r="22"/><circle class="dot" r="9"/><text class="ptl" style="font-size:16px">${l}</text></g>`;
+const mDot=(a,l)=>{const p=mp(a),t=P(MO.x,MO.y,MR+22,a);return `<circle cx="${f1(p.x)}" cy="${f1(p.y)}" r="5.5" fill="#15224e"/><text x="${f1(t.x)}" y="${f1(t.y)}" class="ptl" style="font-size:14px" text-anchor="middle" dominant-baseline="middle">${l}</text>`;};
+function mPlace(g,p){
+  g.setAttribute('transform',`translate(${f1(p.x)},${f1(p.y)})`);
+  const u={x:(p.x-MO.x)/MR,y:(p.y-MO.y)/MR},t=g.querySelector('text');
+  t.setAttribute('x',f1(u.x*26));t.setAttribute('y',f1(u.y*26+6));
+}
+const caseCopy={
+  dia:{t:'Угол, опирающийся на диаметр',
+    p:'Перетащите точку C в любое место окружности: стороны угла всё равно «смотрят» на дугу в 180° (это и есть диаметр), поэтому сам угол — всегда половина от 180°.',
+    f:'∠ACB = 90°',n:'Следствие №1 из теоремы: ½ · 180° = 90°.'},
+  arc:{t:'Углы на одной дуге равны',
+    p:'Оба угла опираются на одну и ту же оранжевую дугу AB, значит они обязаны быть равными — где бы ни стояли вершины C₁ и C₂. Таскайте их и убедитесь.',
+    f:'∠AC₁B = ∠AC₂B',n:'Следствие №2: вписанные углы, опирающиеся на одну дугу, равны.'},
+  quad:{t:'Вписанный четырёхугольник',
+    p:'Все четыре вершины лежат на окружности. Двигайте их как угодно: противоположные углы ∠A и ∠C в сумме всегда дают 180°. То же самое — для ∠B и ∠D.',
+    f:'∠A + ∠C = 180°',n:'Следствие №3: противоположные углы вписанного четырёхугольника в сумме дают 180°.'}
+};
+function miniBuild(mode){
+  MINI.mode=mode;const svg=$('#miniSvg');let h=`<circle cx="170" cy="170" r="${MR}" fill="#fff" stroke="#15224e" stroke-width="3"/>`;
+  if(mode==='dia'){
+    h+=`<line id="mAB" x1="${f1(mp(180).x)}" y1="170" x2="${f1(mp(0).x)}" y2="170" stroke="#15224e" stroke-width="3"/>
+        <line id="mCA" stroke="#15224e" stroke-width="2.4"/><line id="mCB" stroke="#15224e" stroke-width="2.4"/>
+        <path id="mW" fill="#0c86a8" opacity=".85"/><text id="mWt" class="vt" fill="#085d75" text-anchor="middle">90°</text>
+        ${mDot(180,'A')}${mDot(0,'B')}<circle cx="170" cy="170" r="3" fill="#15224e"/>${mPt('mC','C')}`;
+  }else if(mode==='arc'){
+    h+=`<path d="${arcD(MO.x,MO.y,MR,210,120)}" fill="none" stroke="#f4600c" stroke-width="7" stroke-linecap="round" opacity=".9"/>
+        <g stroke="#15224e" stroke-width="2"><line id="mC1A"/><line id="mC1B"/><line id="mC2A"/><line id="mC2B"/></g>
+        <path id="mW1" fill="#0c86a8" opacity=".8"/><path id="mW2" fill="#0c86a8" opacity=".8"/>
+        ${mDot(210,'A')}${mDot(330,'B')}${mPt('mC1','C₁')}${mPt('mC2','C₂')}`;
+  }else{
+    h+=`<polygon id="mPoly" fill="rgba(244,96,12,.06)" stroke="#15224e" stroke-width="2.4"/>
+        <path id="mQA" fill="#f4600c" opacity=".85"/><path id="mQC" fill="#0c86a8" opacity=".85"/>
+        ${mPt('mQA','A')}${mPt('mQB','B')}${mPt('mQC','C')}${mPt('mQD','D')}`;
+  }
+  svg.innerHTML=h;miniUpdate();
+}
+function miniUpdate(){
+  const out=$('#miniOut');
+  if(MINI.mode==='dia'){
+    const A=mp(180),B=mp(0),C=mp(MINI.c);
+    mPlace($('#mC'),C);
+    [['mCA',A],['mCB',B]].forEach(([id,p])=>{const l=$('#'+id);l.setAttribute('x1',f1(C.x));l.setAttribute('y1',f1(C.y));l.setAttribute('x2',f1(p.x));l.setAttribute('y2',f1(p.y));});
+    $('#mW').setAttribute('d',wedgeD(C,A,B,34).d);
+    const t={x:C.x+(MO.x-C.x)*.5,y:C.y+(MO.y-C.y)*.5};
+    const w=$('#mWt');w.setAttribute('x',f1(t.x));w.setAttribute('y',f1(t.y));
+    out.innerHTML=`∠ACB = <b>${Math.round(angBetween(A,C,B))}°</b> — при любом положении C!`;
+  }else if(MINI.mode==='arc'){
+    const A=mp(210),B=mp(330),M=mp(270),C1=mp(MINI.c1),C2=mp(MINI.c2);
+    mPlace($('#mC1'),C1);mPlace($('#mC2'),C2);
+    [['mC1A',C1,A],['mC1B',C1,B],['mC2A',C2,A],['mC2B',C2,B]].forEach(([id,f,p])=>{const l=$('#'+id);l.setAttribute('x1',f1(f.x));l.setAttribute('y1',f1(f.y));l.setAttribute('x2',f1(p.x));l.setAttribute('y2',f1(p.y));});
+    $('#mW1').setAttribute('d',wedgeD(C1,A,B,32,M).d);
+    $('#mW2').setAttribute('d',wedgeD(C2,A,B,32,M).d);
+    const v1=Math.round(wedgeD(C1,A,B,32,M).value);
+    out.innerHTML=`∠AC₁B = <b>${v1}°</b> &nbsp;·&nbsp; ∠AC₂B = <b>${v1}°</b> &nbsp;→&nbsp; равны!`;
+  }else{
+    const pts=MINI.q.map(mp);
+    ['mQA','mQB','mQC','mQD'].forEach((id,i)=>mPlace($('#'+id),pts[i]));
+    $('#mPoly').setAttribute('points',pts.map(p=>`${f1(p.x)},${f1(p.y)}`).join(' '));
+    $('#mQA').setAttribute('d',wedgeD(pts[0],pts[3],pts[1],30).d);
+    $('#mQC').setAttribute('d',wedgeD(pts[2],pts[1],pts[3],30).d);
+    const aR=Math.round(angBetween(pts[3],pts[0],pts[1])),cR=180-aR;
+    out.innerHTML=`∠A = <b>${aR}°</b>, ∠C = <b>${cR}°</b> → сумма <b>180°</b>`;
+  }
+}
+function showCase(mode){
+  miniBuild(mode);
+  const c=caseCopy[mode];
+  $('#caseText').innerHTML=`<span class="chip chip-y">следствие</span><h3 style="margin-top:12px">${c.t}</h3><p>${c.p}</p><span class="case-formula">${c.f}</span><p style="margin-top:16px;font-size:.9rem">ℹ️ ${c.n}</p>`;
+}
+$$('.tab').forEach(t=>t.addEventListener('click',()=>{
+  $$('.tab').forEach(x=>x.classList.remove('active'));t.classList.add('active');showCase(t.dataset.mode);
+}));
+(function bindMini(){
+  const svg=$('#miniSvg');let key=null;
+  svg.addEventListener('pointerdown',e=>{const g=e.target.closest('.pt');if(!g)return;key=g.id;svg.setPointerCapture(e.pointerId);});
+  svg.addEventListener('pointermove',e=>{
+    if(!key)return;
+    const p=svgPt(svg,e);
+    const ang=Math.round(norm360(deg(Math.atan2(-(p.y-MO.y),p.x-MO.x)))); // целые градусы
+    if(MINI.mode==='dia'){
+      if(key!=='mC')return;
+      if(angDist(ang,0)<12||angDist(ang,180)<12)return;
+      MINI.c=ang;
+    }else if(MINI.mode==='arc'){
+      const km={mC1:'c1',mC2:'c2'}[key];if(!km)return; // исправлено: раньше писалось не в те переменные
+      let v=ang;
+      if(v>202&&v<338)v=v<270?202:338;
+      if(v<338)v+=360;
+      MINI[km]=Math.max(342,Math.min(558,v));
+    }else{
+      const i={mQA:0,mQB:1,mQC:2,mQD:3}[key];if(i===undefined)return;
+      const prev=MINI.q[(i+3)%4],next=MINI.q[(i+1)%4];
+      const span=norm360(next-prev),off=norm360(ang-prev);
+      if(off<14||off>span-14)return;
+      MINI.q[i]=ang;
+    }
+    miniUpdate();
+  });
+  ['pointerup','pointercancel'].forEach(ev=>svg.addEventListener(ev,()=>key=null));
+})();
+showCase('dia');
+
+/* ============ TASK GENERATOR ============ */
+const GC={x:150,y:150},GR=100;
+const gp=a=>P(GC.x,GC.y,GR,a);
+const fBase=`<circle cx="150" cy="150" r="100" fill="#fff" stroke="#15224e" stroke-width="2.5"/><circle cx="150" cy="150" r="2.8" fill="#15224e"/>`;
+const dot=(p,c='#15224e')=>`<circle cx="${f1(p.x)}" cy="${f1(p.y)}" r="5" fill="${c}" stroke="#fff" stroke-width="1.6"/>`;
+const lbl=(t,a,rr=124)=>{const p=P(GC.x,GC.y,rr,a);return `<text x="${f1(p.x)}" y="${f1(p.y)}" text-anchor="middle" dominant-baseline="middle" class="fl" fill="#15224e">${t}</text>`;};
+const seg=(p,q,w=2,da='')=>`<line x1="${f1(p.x)}" y1="${f1(p.y)}" x2="${f1(q.x)}" y2="${f1(q.y)}" stroke="#15224e" stroke-width="${w}" ${da?`stroke-dasharray="${da}"`:''} stroke-linecap="round"/>`;
+const fw=(v,p1,p2,r,fill,tgt)=>`<path d="${wedgeD(v,p1,p2,r,tgt).d}" fill="${fill}" opacity=".82"/>`;
+const vt=(p,t,c)=>`<text x="${f1(p.x)}" y="${f1(p.y)}" text-anchor="middle" dominant-baseline="middle" class="fv" fill="${c}">${t}</text>`;
+const oTxt=`<text x="158" y="167" class="fl" fill="#15224e">O</text>`;
+
+const makers={
+  ci(){
+    const al=2*rnd(20,80),aA=205,aB=aA+al,aC=aB+(360-al)/2;
+    const A=gp(aA),B=gp(aB),C=gp(aC),M=gp(aA+al/2);
+    const svg=`<svg class="tsvg" viewBox="0 0 300 300">${fBase}${fw(GC,A,B,40,'#f4600c',M)}${seg(GC,A)}${seg(GC,B)}${seg(C,A)}${seg(C,B)}${fw(C,A,B,28,'#0c86a8',M)}${dot(A)}${dot(B)}${dot(C)}${lbl('A',aA)}${lbl('B',aB)}${lbl('C',aC)}${oTxt}${vt(P(GC.x,GC.y,64,aA+al/2),al+'°','#b34300')}${vt({x:C.x+(M.x-C.x)*.5,y:C.y+(M.y-C.y)*.5},'?','#085d75')}</svg>`;
+    return{tag:'центральный → вписанный',svg,answer:al/2,
+      text:`Центральный угол <b>∠AOB = ${al}°</b>. Найдите вписанный угол <b>∠ACB</b>, опирающийся на ту же дугу.`,
+      hint:'Вписанный угол равен половине центрального, если они опираются на одну дугу.',
+      sol:`∠ACB = ½·∠AOB = ½·${al}° = <b>${al/2}°</b>.`};
+  },
+  ic(){
+    const be=rnd(28,80),aA=205,aB=aA+2*be,aC=aB+(360-2*be)/2;
+    const A=gp(aA),B=gp(aB),C=gp(aC),M=gp(aA+be);
+    const svg=`<svg class="tsvg" viewBox="0 0 300 300">${fBase}${fw(GC,A,B,40,'#f4600c',M)}${seg(GC,A)}${seg(GC,B)}${seg(C,A)}${seg(C,B)}${fw(C,A,B,28,'#0c86a8',M)}${dot(A)}${dot(B)}${dot(C)}${lbl('A',aA)}${lbl('B',aB)}${lbl('C',aC)}${oTxt}${vt(P(GC.x,GC.y,64,aA+be),'?','#b34300')}${vt({x:C.x+(M.x-C.x)*.5,y:C.y+(M.y-C.y)*.5},be+'°','#085d75')}</svg>`;
+    return{tag:'вписанный → центральный',svg,answer:2*be,
+      text:`Вписанный угол <b>∠ACB = ${be}°</b>. Найдите центральный угол <b>∠AOB</b>, опирающийся на ту же дугу.`,
+      hint:'Центральный угол вдвое больше вписанного, опирающегося на ту же дугу.',
+      sol:`∠AOB = 2·∠ACB = 2·${be}° = <b>${2*be}°</b>.`};
+  },
+  dia(){
+    const x=rnd(18,72),aC=rnd(40,140);
+    const A=gp(180),B=gp(0),C=gp(aC);
+    const u={x:(A.x-C.x),y:(A.y-C.y)},l1=Math.hypot(u.x,u.y);u.x/=l1;u.y/=l1;
+    const v={x:(B.x-C.x),y:(B.y-C.y)},l2=Math.hypot(v.x,v.y);v.x/=l2;v.y/=l2;
+    const s=12,ra=`<path d="M ${f1(C.x+u.x*s)} ${f1(C.y+u.y*s)} L ${f1(C.x+u.x*s+v.x*s)} ${f1(C.y+u.y*s+v.y*s)} L ${f1(C.x+v.x*s)} ${f1(C.y+v.y*s)}" fill="none" stroke="#15224e" stroke-width="1.8"/>`;
+    const pA={x:A.x+((B.x+C.x)/2-A.x)*.42,y:A.y+((B.y+C.y)/2-A.y)*.42};
+    const pB={x:B.x+((A.x+C.x)/2-B.x)*.42,y:B.y+((A.y+C.y)/2-B.y)*.42};
+    const svg=`<svg class="tsvg" viewBox="0 0 300 300">${fBase}${seg(A,B,2.5)}${seg(C,A)}${seg(C,B)}${ra}${fw(A,B,C,26,'#f4600c')}${fw(B,A,C,26,'#0c86a8')}${dot(A)}${dot(B)}${dot(C)}${lbl('A',180)}${lbl('B',0)}${lbl('C',aC)}${vt(pA,x+'°','#b34300')}${vt(pB,'?','#085d75')}</svg>`;
+    return{tag:'угол на диаметре',svg,answer:90-x,
+      text:`<b>AB — диаметр</b> окружности. Угол <b>∠CAB = ${x}°</b>. Найдите угол <b>∠CBA</b>.`,
+      hint:'Вписанный угол, опирающийся на диаметр, равен 90°. Дальше — сумма углов треугольника.',
+      sol:`∠ACB = 90° (опирается на диаметр). Значит ∠CBA = 180° − 90° − ${x}° = <b>${90-x}°</b>.`};
+  },
+  arc(){
+    const y=rnd(25,70),c1=390+rnd(0,50),c2=472+rnd(0,66);
+    const A=gp(210),B=gp(330),C1=gp(c1),C2=gp(c2),M=gp(270);
+    const svg=`<svg class="tsvg" viewBox="0 0 300 300">${fBase}<path d="${arcD(150,150,100,210,120)}" fill="none" stroke="#f4600c" stroke-width="5" stroke-linecap="round" opacity=".85"/>${seg(C1,A)}${seg(C1,B)}${seg(C2,A)}${seg(C2,B)}${fw(C1,A,B,26,'#0c86a8',M)}${fw(C2,A,B,26,'#0c86a8',M)}${dot(A)}${dot(B)}${dot(C1,'#0c86a8')}${dot(C2,'#0c86a8')}${lbl('A',210)}${lbl('B',330)}${lbl('C₁',c1)}${lbl('C₂',c2)}${vt({x:C1.x+(M.x-C1.x)*.48,y:C1.y+(M.y-C1.y)*.48},y+'°','#085d75')}${vt({x:C2.x+(M.x-C2.x)*.48,y:C2.y+(M.y-C2.y)*.48},'?','#085d75')}</svg>`;
+    return{tag:'углы на одной дуге',svg,answer:y,
+      text:`Углы ∠AC₁B и ∠AC₂B опираются на <b>одну и ту же дугу AB</b>. Если <b>∠AC₁B = ${y}°</b>, чему равен <b>∠AC₂B</b>?`,
+      hint:'Вписанные углы, опирающиеся на одну дугу, равны между собой.',
+      sol:`Оба угла опираются на одну дугу AB, поэтому ∠AC₂B = ∠AC₁B = <b>${y}°</b>.`};
+  },
+  quad(){
+    const aA=100,aB=aA+55+rnd(0,50),aC=aB+45+rnd(0,50),aD=aA-(45+rnd(0,50));
+    const A=gp(aA),B=gp(aB),C=gp(aC),D=gp(aD);
+    const given=Math.round(angBetween(D,A,B));
+    const pA={x:A.x+(GC.x-A.x)*.36,y:A.y+(GC.y-A.y)*.36};
+    const pC={x:C.x+(GC.x-C.x)*.36,y:C.y+(GC.y-C.y)*.36};
+    const svg=`<svg class="tsvg" viewBox="0 0 300 300">${fBase}<polygon points="${[A,B,C,D].map(p=>`${f1(p.x)},${f1(p.y)}`).join(' ')}" fill="rgba(244,96,12,.06)" stroke="#15224e" stroke-width="2.2"/>${fw(A,D,B,24,'#f4600c')}${fw(C,B,D,24,'#0c86a8')}${dot(A)}${dot(B)}${dot(C)}${dot(D)}${lbl('A',aA)}${lbl('B',aB)}${lbl('C',aC)}${lbl('D',aD)}${vt(pA,given+'°','#b34300')}${vt(pC,'?','#085d75')}</svg>`;
+    return{tag:'вписанный четырёхугольник',svg,answer:180-given,
+      text:`Четырёхугольник <b>ABCD</b> вписан в окружность. <b>∠DAB = ${given}°</b>. Найдите <b>∠BCD</b>.`,
+      hint:'Противоположные углы вписанного четырёхугольника в сумме дают 180°.',
+      sol:`∠A + ∠C = 180° → ∠C = 180° − ${given}° = <b>${180-given}°</b>.`};
+  },
+  maj(){
+    const al=2*rnd(40,80),aA=210,aB=aA+al;
+    const aC=Math.max(aA+8,Math.min(aB-8,aA+al/2+rnd(-Math.floor(al/4),Math.floor(al/4))));
+    const A=gp(aA),B=gp(aB),C=gp(aC),Mmin=gp(aA+al/2),Mmaj=P(GC.x,GC.y,GR,aB+(360-al)/2);
+    const svg=`<svg class="tsvg" viewBox="0 0 300 300">${fBase}<path d="${arcD(150,150,100,aB,360-al)}" fill="none" stroke="#0c86a8" stroke-width="4" stroke-dasharray="7 7" opacity=".8"/>${fw(GC,A,B,40,'#f4600c',Mmin)}${seg(GC,A)}${seg(GC,B)}${seg(C,A)}${seg(C,B)}${fw(C,A,B,28,'#0c86a8',Mmaj)}${dot(A)}${dot(B)}${dot(C,'#0c86a8')}${lbl('A',aA)}${lbl('B',aB)}${lbl('C',aC)}${oTxt}${vt(P(GC.x,GC.y,64,aA+al/2),al+'°','#b34300')}${vt({x:C.x+(Mmaj.x-C.x)*.42,y:C.y+(Mmaj.y-C.y)*.42},'?','#085d75')}</svg>`;
+    return{tag:'большая дуга',svg,answer:180-al/2,
+      text:`Меньший центральный угол <b>∠AOB = ${al}°</b>. Точка C лежит на <b>малой</b> дуге AB. Найдите вписанный угол <b>∠ACB</b>.`,
+      hint:'∠ACB опирается на БОЛЬШУЮ дугу AB. Её мера равна 360° − α.',
+      sol:`Большая дуга AB: 360° − ${al}° = ${360-al}°. Тогда ∠ACB = ½·${360-al}° = <b>${180-al/2}°</b>.`};
+  }
+};
+const pools={easy:['ci','ic'],mid:['ci','ic','dia','arc'],hard:['ci','ic','dia','arc','quad','maj']};
+const diffName={easy:'легко',mid:'средне',hard:'сложно'};
+const praise=['Так держать! 🎉','Идеально! ✨','Теорема поймана! 🎯','Чётко! 🔥','Отлично! 📐'];
+const wrongMsg=['Пока неверно — попробуйте ещё раз.','Не совсем. Вспомните: связь углов — «×2» или «÷2».','Мимо! Перечитайте подсказку под задачей.'];
+const G={cur:null,wrong:0,done:false,num:0,solved:0,tries:0,streak:0,last:''};
+
+function newTask(){
+  const diff=document.querySelector('input[name="diff"]:checked').value;
+  const pool=pools[diff];
+  let key;do{key=pool[rnd(0,pool.length-1)];}while(key===G.last&&pool.length>1);
+  G.last=key;G.cur=makers[key]();G.wrong=0;G.done=false;G.num++;
+  $('#taskNum').textContent='Задача №'+G.num;
+  $('#taskTag').textContent=G.cur.tag;
+  $('#taskDiff').textContent=diffName[diff];
+  $('#taskText').innerHTML=G.cur.text;
+  $('#taskFig').innerHTML=G.cur.svg;
+  const inp=$('#ansInp');inp.value='';inp.disabled=false;inp.classList.remove('shake');
+  $('#fb').hidden=true;$('#fb').innerHTML='';
+  $('#btnNext').hidden=true;$('#btnCheck').textContent='Проверить';
+  inp.focus();
+}
+function updStats(){
+  $('#stSolved').textContent=G.solved;
+  $('#stTries').textContent=G.tries;
+  $('#stStreak').textContent=G.streak;
+  $('#stAcc').textContent=G.tries?Math.round(G.solved/G.tries*100)+'%':'—';
+}
+$('#ansForm').addEventListener('submit',e=>{
+  e.preventDefault();
+  if(G.done){newTask();return;}
+  const raw=$('#ansInp').value.trim().replace(',','.');
+  if(!raw){$('#ansInp').classList.add('shake');setTimeout(()=>$('#ansInp').classList.remove('shake'),450);return;}
+  const v=parseFloat(raw);G.tries++;
+  const fb=$('#fb');fb.hidden=false;
+  if(Math.abs(v-G.cur.answer)<0.01){
+    G.solved++;G.streak++;G.done=true;
+    $('#ansInp').disabled=true;$('#btnCheck').textContent='✔ Решена';$('#btnNext').hidden=false;
+    fb.innerHTML=`<div class="fb-ok">${praise[rnd(0,praise.length-1)]} Ответ: ${fmt(G.cur.answer)}°</div><div class="fb-exp">📖 ${G.cur.sol}</div>`;
+    const card=$('#taskCard');card.classList.remove('win');void card.offsetWidth;card.classList.add('win');
+  }else{
+    G.streak=0;G.wrong++;
+    const inp=$('#ansInp');inp.classList.remove('shake');void inp.offsetWidth;inp.classList.add('shake');
+    let html=`<div class="fb-bad">${wrongMsg[rnd(0,wrongMsg.length-1)]}</div>`;
+    if(G.wrong>=2)html+=`<div class="fb-hint">💡 Подсказка: ${G.cur.hint}</div>`;
+    fb.innerHTML=html;
+  }
+  updStats();
+});
+$('#btnSol').addEventListener('click',()=>{
+  if(G.done)return;
+  G.done=true;$('#ansInp').disabled=true;$('#btnCheck').textContent='—';$('#btnNext').hidden=false;
+  const fb=$('#fb');fb.hidden=false;
+  fb.innerHTML=`<div class="fb-sol">📖 Решение: ${G.cur.sol}</div>`;
+});
+$('#btnNext').addEventListener('click',newTask);
+$('#btnNew').addEventListener('click',newTask);
+$$('input[name="diff"]').forEach(r=>r.addEventListener('change',newTask));
+newTask();
+
+/* ============ reveals ============ */
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}}),{threshold:.12});
+$$('.reveal').forEach(el=>io.observe(el));
+</script>
+</body>
+</html>
