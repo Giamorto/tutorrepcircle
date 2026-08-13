@@ -630,7 +630,7 @@ const caseCopy={
 };
 function miniBuild(mode){
   MINI.mode=mode;
-  if(mode==='quad') MINI.q=[60,150, 200,50, 280,150, 150,250]; // 4 точки: x1,y1, x2,y2...
+  if(mode==='quad') MINI.q=[100,200,280,20]; // 4 угла A,B,C,D по кругу
   const svg=$('#miniSvg');let h=`<circle cx="170" cy="170" r="${MR}" fill="#fff" stroke="#15224e" stroke-width="3"/>`;
   if(mode==='dia'){
     h+=`<line id="mAB" x1="${f1(mp(180).x)}" y1="170" x2="${f1(mp(0).x)}" y2="170" stroke="#15224e" stroke-width="3"/>
@@ -644,7 +644,7 @@ function miniBuild(mode){
         ${mDot(210,'A')}${mDot(330,'B')}${mPt('mC1','C₁')}${mPt('mC2','C₂')}`;
   }else{
     h+=`<polygon id="mPoly" fill="rgba(244,96,12,.06)" stroke="#15224e" stroke-width="2.4"/>
-        <path id="mQA" fill="#f4600c" opacity=".85"/><path id="mQC" fill="#0c86a8" opacity=".85"/>
+        <path id="mQAW" fill="#f4600c" opacity=".85"/><path id="mQCW" fill="#0c86a8" opacity=".85"/>
         ${mPt('mQA','A')}${mPt('mQB','B')}${mPt('mQC','C')}${mPt('mQD','D')}`;
   }
   svg.innerHTML=h;miniUpdate();
@@ -677,8 +677,8 @@ function miniUpdate(){
       const angA=Math.round(angBetween(pts[3],pts[0],pts[1]));
       // Угол C: между B-C-D
       const angC=Math.round(angBetween(pts[1],pts[2],pts[3]));
-      $('#mQA').setAttribute('d',wedgeD(pts[0],pts[3],pts[1],30).d);
-      $('#mQC').setAttribute('d',wedgeD(pts[2],pts[1],pts[3],30).d);
+      $('#mQAW').setAttribute('d',wedgeD(pts[0],pts[3],pts[1],30).d);
+      $('#mQCW').setAttribute('d',wedgeD(pts[2],pts[1],pts[3],30).d);
       out.innerHTML=`∠A = <b>${angA}°</b>, ∠C = <b>${angC}°</b> → сумма <b>${angA+angC}°</b>`;
     }
   }
