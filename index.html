@@ -683,7 +683,7 @@ function miniUpdate(){
       const wA=wedgeD(pts[0],pts[3],pts[1],30),wC=wedgeD(pts[2],pts[1],pts[3],30);
       $('#mQAW').setAttribute('d',wA.d);
       $('#mQCW').setAttribute('d',wC.d);
-      const lr=46;
+      const lr=36; // чуть дальше радиуса клина (30), чтобы подпись всегда была рядом с ним
       $('#mQAt').setAttribute('x',f1(pts[0].x+lr*Math.cos(wA.mid)));$('#mQAt').setAttribute('y',f1(pts[0].y+lr*Math.sin(wA.mid)));$('#mQAt').textContent=angA+'°';
       $('#mQCt').setAttribute('x',f1(pts[2].x+lr*Math.cos(wC.mid)));$('#mQCt').setAttribute('y',f1(pts[2].y+lr*Math.sin(wC.mid)));$('#mQCt').textContent=angC+'°';
       out.innerHTML=`∠A = <b>${angA}°</b>, ∠C = <b>${angC}°</b> → сумма <b>${angA+angC}°</b>`;
@@ -714,12 +714,15 @@ $$('.tab').forEach(t=>t.addEventListener('click',()=>{
       let v=ang;
       if(v>202&&v<338)v=v<270?202:338;
       if(v<338)v+=360;
-      MINI[km]=Math.max(342,Math.min(558,v));
+      v=Math.max(342,Math.min(558,v));
+      const other=km==='c1'?MINI.c2:MINI.c1;
+      if(Math.abs(v-other)<20)return; // не даём C1/C2 сойтись — иначе их зоны захвата перекрываются
+      MINI[km]=v;
     }else{
       const i={mQA:0,mQB:1,mQC:2,mQD:3}[key];if(i===undefined)return;
       const prev=MINI.q[(i+3)%4],next=MINI.q[(i+1)%4];
       const span=norm360(next-prev),off=norm360(ang-prev);
-      if(off<14||off>span-14)return;
+      if(off<20||off>span-20)return; // 20° держит соседние точки дальше, чем сумма радиусов их зон захвата
       MINI.q[i]=ang;
     }
     miniUpdate();
