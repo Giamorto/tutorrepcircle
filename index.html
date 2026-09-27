@@ -17,6 +17,7 @@
     --board:#1e4d3b; --chalk:#f2f7ef; --wood:#c8955c;
   }
   *{box-sizing:border-box;margin:0;padding:0}
+  [hidden]{display:none!important}
   html{scroll-behavior:smooth;scroll-padding-top:86px}
   body{
     font-family:'Golos Text',system-ui,sans-serif;color:var(--ink);line-height:1.55;
@@ -41,7 +42,7 @@
   .brand svg{display:block}
   .nav-links{display:flex;gap:4px;margin-left:auto;flex-wrap:wrap}
   .nav-links a{font-weight:600;font-size:.9rem;color:var(--ink);text-decoration:none;padding:.45em .8em;border-radius:8px;transition:.18s}
-  .nav-links a:hover{background:var(--sun);transform:translateY(-1px)}
+  .nav-links a:hover{background:var(--sun)}
   .nav-cta{background:var(--orange);color:#fff !important;border:2px solid var(--ink);box-shadow:3px 3px 0 var(--ink);border-radius:10px;font-weight:700}
   .nav-cta:hover{background:var(--orange) !important;transform:translate(-1px,-2px);box-shadow:4px 5px 0 var(--ink)}
 
@@ -61,6 +62,8 @@
     box-shadow:5px 5px 0 var(--ink);cursor:pointer;text-decoration:none;transition:transform .15s,box-shadow .15s}
   .btn:hover{transform:translate(-2px,-2px);box-shadow:7px 7px 0 var(--ink)}
   .btn:active{transform:translate(2px,2px);box-shadow:2px 2px 0 var(--ink)}
+  .btn,.tab,.preset,.nav-cta{position:relative}
+  .btn::after,.tab::after,.preset::after,.nav-cta::after{content:"";position:absolute;inset:-4px}
   .btn-o{background:var(--orange);color:#fff}
   .btn-t{background:var(--teal);color:#fff}
   .btn-ink{background:var(--ink);color:#fff}
@@ -103,7 +106,7 @@
   .def{padding:28px;box-shadow:8px 8px 0 rgba(21,34,78,.14);transition:transform .25s,box-shadow .25s;overflow:hidden}
   .def::before{content:"";position:absolute;top:0;left:0;right:0;height:9px;border-radius:13px 13px 0 0}
   .def.o::before{background:var(--orange)} .def.t::before{background:var(--teal)}
-  .def:hover{transform:translateY(-6px) rotate(-.4deg);box-shadow:11px 13px 0 rgba(21,34,78,.2)}
+  .def:hover{box-shadow:11px 13px 0 rgba(21,34,78,.2)}
   .def h3{font-size:1.15rem;margin-bottom:14px;display:flex;align-items:center;gap:.6em}
   .def h3 .sq{width:16px;height:16px;border:2.5px solid var(--ink);display:inline-block;transform:rotate(45deg)}
   .def.o .sq{background:var(--orange)} .def.t .sq{background:var(--teal)}
@@ -138,10 +141,10 @@
   .pt .dot{fill:#fff;stroke:var(--ink);stroke-width:3.5;transition:fill .15s}
   .pt:hover .dot{fill:var(--sun)}
   .ptl{font:700 19px 'Unbounded';fill:var(--ink);text-anchor:middle;paint-order:stroke;stroke:#fff;stroke-width:5px}
-  .vt{font:700 17px 'JetBrains Mono'}
+  .vt{font:700 17px 'JetBrains Mono';paint-order:stroke;stroke:#fff;stroke-width:4px;stroke-linejoin:round}
   .lab-side{display:grid;gap:14px}
   .ro{display:flex;align-items:center;justify-content:space-between;gap:14px;background:#fff;border:3px solid var(--ink);border-radius:14px;padding:14px 18px;transition:transform .15s}
-  .ro:hover{transform:translateX(4px)}
+  .ro:hover{box-shadow:4px 4px 0 rgba(21,34,78,.18)}
   .ro-l{font-size:.78rem;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-soft)}
   .ro-v{font-family:'JetBrains Mono';font-weight:700;font-size:2rem;line-height:1}
   .ro-c{border-left:12px solid var(--orange)} .ro-c .ro-v{color:var(--orange-d)}
@@ -199,7 +202,7 @@
   .p-text b{color:var(--teal-d)}
   .p-fig{display:flex;justify-content:center;margin:6px 0 20px}
   .tsvg{width:min(310px,100%);height:auto}
-  .fl{font:800 14px 'Golos Text'} .fv{font:700 15px 'JetBrains Mono'}
+  .fl{font:800 14px 'Golos Text'} .fv{font:700 15px 'JetBrains Mono';paint-order:stroke;stroke:#fff;stroke-width:3.5px;stroke-linejoin:round}
   .p-ans{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
   .p-ans label{font-weight:700;display:flex;align-items:center;gap:10px}
   #ansInp{font-family:'JetBrains Mono';font-weight:700;font-size:1.25rem;width:130px;padding:.45em .6em;border:3px solid var(--ink);border-radius:10px;background:#fff;text-align:center;transition:.15s}
@@ -216,7 +219,7 @@
   /* ---------- CHEATSHEET / FOOTER ---------- */
   .cheat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
   .cheat{background:#fff;border:3px solid var(--ink);border-radius:14px;padding:20px;box-shadow:6px 6px 0 rgba(21,34,78,.16);transition:.2s}
-  .cheat:hover{transform:translateY(-5px) rotate(-.6deg);box-shadow:8px 10px 0 rgba(21,34,78,.22)}
+  .cheat:hover{box-shadow:8px 10px 0 rgba(21,34,78,.22)}
   .cheat .g{font-family:'Unbounded';font-weight:900;font-size:1.7rem;display:block;margin-bottom:8px}
   .cheat:nth-child(1){border-top:10px solid var(--orange)} .cheat:nth-child(2){border-top:10px solid var(--teal)}
   .cheat:nth-child(3){border-top:10px solid var(--sun)} .cheat:nth-child(4){border-top:10px solid var(--green)}
@@ -296,11 +299,11 @@
         <h3><span class="sq"></span>Центральный угол</h3>
         <svg class="fig" width="180" height="180" viewBox="0 0 180 180">
           <circle cx="90" cy="90" r="70" fill="#fff" stroke="#15224e" stroke-width="2.5"/>
-          <path d="M90 90 L155 62 A70 70 0 0 1 148 125 Z" fill="#f4600c" opacity=".8"/>
-          <path d="M155 62 A70 70 0 0 1 148 125" fill="none" stroke="#d14e00" stroke-width="6" stroke-linecap="round"/>
-          <line x1="90" y1="90" x2="155" y2="62" stroke="#15224e" stroke-width="2"/>
-          <line x1="90" y1="90" x2="148" y2="125" stroke="#15224e" stroke-width="2"/>
-          <circle cx="90" cy="90" r="4" fill="#15224e"/><circle cx="155" cy="62" r="4" fill="#15224e"/><circle cx="148" cy="125" r="4" fill="#15224e"/>
+          <path d="M90 90 L154.4 62.6 A70 70 0 0 1 150 126.1 Z" fill="#f4600c" opacity=".8"/>
+          <path d="M154.4 62.6 A70 70 0 0 1 150 126.1" fill="none" stroke="#d14e00" stroke-width="6" stroke-linecap="round"/>
+          <line x1="90" y1="90" x2="154.4" y2="62.6" stroke="#15224e" stroke-width="2"/>
+          <line x1="90" y1="90" x2="150" y2="126.1" stroke="#15224e" stroke-width="2"/>
+          <circle cx="90" cy="90" r="4" fill="#15224e"/><circle cx="154.4" cy="62.6" r="4" fill="#15224e"/><circle cx="150" cy="126.1" r="4" fill="#15224e"/>
           <text x="118" y="98" font-family="JetBrains Mono" font-weight="700" font-size="13" fill="#d14e00">α</text>
         </svg>
         <p>Угол, у которого <span class="hl">вершина совпадает с центром</span> окружности, а стороны — два радиуса.</p>
@@ -310,10 +313,10 @@
         <h3><span class="sq"></span>Вписанный угол</h3>
         <svg class="fig" width="180" height="180" viewBox="0 0 180 180">
           <circle cx="90" cy="90" r="70" fill="#fff" stroke="#15224e" stroke-width="2.5"/>
-          <path d="M155 62 A70 70 0 0 1 148 125" fill="none" stroke="#d14e00" stroke-width="5" stroke-linecap="round" opacity=".55"/>
-          <path d="M45 148 L155 62 M45 148 L148 125" stroke="#15224e" stroke-width="2"/>
-          <path d="M45 148 L65.5 132 A26 26 0 0 1 70.4 142.3 Z" fill="#0c86a8" opacity=".85"/>
-          <circle cx="45" cy="148" r="4" fill="#15224e"/><circle cx="155" cy="62" r="4" fill="#15224e"/><circle cx="148" cy="125" r="4" fill="#15224e"/>
+          <path d="M154.4 62.6 A70 70 0 0 1 150 126.1" fill="none" stroke="#d14e00" stroke-width="5" stroke-linecap="round" opacity=".55"/>
+          <path d="M46.9 145.2 L154.4 62.6 M46.9 145.2 L150 126.1" stroke="#15224e" stroke-width="2"/>
+          <path d="M46.9 145.2 L67.5 129.4 A26 26 0 0 1 72.5 140.5 Z" fill="#0c86a8" opacity=".85"/>
+          <circle cx="46.9" cy="145.2" r="4" fill="#15224e"/><circle cx="154.4" cy="62.6" r="4" fill="#15224e"/><circle cx="150" cy="126.1" r="4" fill="#15224e"/>
           <text x="84" y="131" font-family="JetBrains Mono" font-weight="700" font-size="13" fill="#0b6f8b">β</text>
         </svg>
         <p>Угол, у которого <span class="hl-t">вершина лежит на окружности</span>, а стороны пересекают её (это хорды).</p>
@@ -349,7 +352,7 @@
     <div class="sec-head reveal">
       <span class="sec-num">02</span>
       <h2>Лаборатория углов</h2>
-      <p>Хватайте точки <b>A</b>, <b>B</b> и <b>C</b> и таскайте их по окружности. Оранжевый клин — центральный угол, бирюзовый — вписанный. Смотрите, что происходит с числами справа. Все углы snapping к целым градусам.</p>
+      <p>Хватайте точки <b>A</b>, <b>B</b> и <b>C</b> и таскайте их по окружности. Оранжевый клин — центральный угол, бирюзовый — вписанный. Смотрите, что происходит с числами справа. Все углы округляются до целых градусов.</p>
     </div>
     <div class="lab-grid">
       <div class="card lab-canvas reveal">
@@ -372,12 +375,12 @@
           <circle cx="310" cy="310" r="4" fill="#15224e"/>
           <text x="322" y="332" class="ptl" style="font-size:16px">O</text>
           <g id="gVals">
-            <text id="labCT" class="vt" fill="#b34300" text-anchor="middle"></text>
-            <text id="labIT" class="vt" fill="#085d75" text-anchor="middle"></text>
+            <text id="labCT" class="vt" fill="#b34300" text-anchor="middle" dominant-baseline="middle"></text>
+            <text id="labIT" class="vt" fill="#085d75" text-anchor="middle" dominant-baseline="middle"></text>
           </g>
           <g class="pt" id="gA"><circle class="hit" r="26"/><circle class="dot" r="11"/><text class="ptl">A</text></g>
           <g class="pt" id="gB"><circle class="hit" r="26"/><circle class="dot" r="11"/><text class="ptl">B</text></g>
-          <g class="pt" id="gC"><circle class="hit" r="26"/><circle class="dot" r="11" stroke="#0c86a8"/><text class="ptl">C</text></g>
+          <g class="pt" id="gC"><circle class="hit" r="26"/><circle class="dot" r="11" style="stroke:#0c86a8"/><text class="ptl">C</text></g>
         </svg>
       </div>
       <div class="lab-side">
@@ -516,6 +519,14 @@ function wedgeD(v,p1,p2,r,target){
   const mid=start+rad(delta)/2;
   return{d:`M ${f1(v.x)} ${f1(v.y)} L ${f1(s.x)} ${f1(s.y)} A ${r} ${r} 0 ${delta>180?1:0} 1 ${f1(e.x)} ${f1(e.y)} Z`,value:delta,mid};
 }
+// Точка для подписи угла: на биссектрисе клина, сразу за его дугой. Отступ учитывает
+// габариты текста (моноширинный шрифт fs px), чтобы подпись не наезжала на клин и не висела далеко.
+function wedgeLabel(v,w,r,text,fs=17){
+  const c=Math.cos(w.mid),s=Math.sin(w.mid);
+  const d=r+4+Math.abs(c)*text.length*fs*.3+Math.abs(s)*fs*.38;
+  return{x:v.x+d*c,y:v.y+d*s};
+}
+function setLabel(el,v,w,r,text){const p=wedgeLabel(v,w,r,text);el.setAttribute('x',f1(p.x));el.setAttribute('y',f1(p.y));el.textContent=text;}
 function svgPt(svg,e){const pt=svg.createSVGPoint();pt.x=e.clientX;pt.y=e.clientY;return pt.matrixTransform(svg.getScreenCTM().inverse());}
 
 /* ============ MAIN LAB ============ */
@@ -533,14 +544,13 @@ function labUpdate(){
   let start,m; if(cp<d){start=L.b;m=360-d;}else{start=L.a;m=d;}
   const M=P(LO.x,LO.y,LR,start+m/2);
   $('#labArcHi').setAttribute('d',arcD(LO.x,LO.y,LR,start,m));
-  $('#labCW').setAttribute('d',wedgeD(LO,A,B,54,M).d);
-  $('#labIW').setAttribute('d',wedgeD(C,A,B,48,M).d);
+  const wc=wedgeD(LO,A,B,54,M),wi=wedgeD(C,A,B,48,M);
+  $('#labCW').setAttribute('d',wc.d);
+  $('#labIW').setAttribute('d',wi.d);
   [['rOA',A],['rOB',B],['rOC',C]].forEach(([id,p])=>{const l=$('#'+id);l.setAttribute('x2',f1(p.x));l.setAttribute('y2',f1(p.y));});
   [['chCA',A],['chCB',B]].forEach(([id,p])=>{const l=$('#'+id);l.setAttribute('x1',f1(C.x));l.setAttribute('y1',f1(C.y));l.setAttribute('x2',f1(p.x));l.setAttribute('y2',f1(p.y));});
-  const ct=P(LO.x,LO.y,92,start+m/2);
-  const ctEl=$('#labCT');ctEl.setAttribute('x',f1(ct.x));ctEl.setAttribute('y',f1(ct.y));ctEl.textContent=fmt(m)+'°';
-  const it={x:C.x+(M.x-C.x)*.42,y:C.y+(M.y-C.y)*.42};
-  const itEl=$('#labIT');itEl.setAttribute('x',f1(it.x));itEl.setAttribute('y',f1(it.y));itEl.textContent=fmt(m/2)+'°';
+  setLabel($('#labCT'),LO,wc,54,fmt(m)+'°');
+  setLabel($('#labIT'),C,wi,48,fmt(m/2)+'°');
   $('#roC').textContent=fmt(m)+'°';$('#roI').textContent=fmt(m/2)+'°';$('#roArc').textContent=fmt(m)+'°';
   $('#labEq').innerHTML=`∠ACB = ½·∠AOB&nbsp;&nbsp;→&nbsp;&nbsp;<b>${fmt(m/2)}° = ½ · ${fmt(m)}°</b>`;
   $('#labNote').innerHTML = m>180
@@ -554,18 +564,18 @@ function setLab(a,m){L.a=norm360(a);L.b=norm360(a+m);L.c=norm360(a+m+20+(360-m)/
   const move=e=>{
     const p=svgPt(svg,e);
     let ang=Math.round(norm360(deg(Math.atan2(-(p.y-LO.y),p.x-LO.x)))); // целые градусы
+    // 14° между любыми точками: иначе зоны захвата (r=26) перекрываются и хватается соседняя точка
+    const near=(...o)=>o.some(x=>angDist(ang,x)<14);
     if(key==='c'){
-      if(angDist(ang,L.a)<7||angDist(ang,L.b)<7)return;
+      if(near(L.a,L.b))return;
       L.c=ang;
     }else if(key==='a'){
-      if(angDist(ang,L.b)<7)return;
       if(norm360(L.b-ang)%2)ang=norm360(ang+1); // дуга чётная → вписанный угол целый
-      if(angDist(ang,L.b)<7)return;
+      if(near(L.b,L.c))return;
       L.a=ang;
     }else if(key==='b'){
-      if(angDist(ang,L.a)<7)return;
       if(norm360(ang-L.a)%2)ang=norm360(ang+1);
-      if(angDist(ang,L.a)<7)return;
+      if(near(L.a,L.c))return;
       L.b=ang;
     }
     labUpdate();
@@ -590,21 +600,34 @@ labUpdate();
     <g stroke="#15224e" stroke-width="2"><line id="dCA"/><line id="dCB"/><line id="dOA" stroke-dasharray="4 5" opacity=".6"/><line id="dOB" stroke-dasharray="4 5" opacity=".6"/></g>
     <circle cx="200" cy="200" r="3.5" fill="#15224e"/>
     <circle id="dDA" r="5" fill="#15224e"/><circle id="dDB" r="5" fill="#15224e"/><circle id="dDC" r="6" fill="#0c86a8"/>`;
+  const el={};['dArc','dCW','dIW','dCA','dCB','dOA','dOB','dDA','dDB','dDC'].forEach(id=>el[id]=svg.querySelector('#'+id));
+  const outC=$('#demoC'),outI=$('#demoI');
+  const a=205,c=25;
+  const line=(l,p,q)=>{l.setAttribute('x1',f1(p.x));l.setAttribute('y1',f1(p.y));l.setAttribute('x2',f1(q.x));l.setAttribute('y2',f1(q.y));};
+  const dot=(d,p)=>{d.setAttribute('cx',f1(p.x));d.setAttribute('cy',f1(p.y));};
+  // m ∈ [40°,160°]: B не доезжает до C (раньше при m=180 B совпадала с C и клин дёргался)
+  function draw(m){
+    const A=P(O.x,O.y,R,a),B=P(O.x,O.y,R,a+m),C=P(O.x,O.y,R,c),M=P(O.x,O.y,R,a+m/2);
+    el.dArc.setAttribute('d',arcD(O.x,O.y,R,a,m));
+    el.dCW.setAttribute('d',wedgeD(O,A,B,36,M).d);
+    el.dIW.setAttribute('d',wedgeD(C,A,B,30,M).d);
+    line(el.dCA,C,A);line(el.dCB,C,B);line(el.dOA,O,A);line(el.dOB,O,B);
+    dot(el.dDA,A);dot(el.dDB,B);dot(el.dDC,C);
+    const mi=2*Math.round(m/2); // чётное → подписи всегда точно «×2»
+    outC.textContent=mi+'°';outI.textContent=mi/2+'°';
+  }
+  draw(110);
+  if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+  let visible=false,running=false; // крутим анимацию только пока картинка на экране
   function tick(ts){
-    const m=110+70*Math.sin(ts/950),a=205,b=a+m,c=25;
-    const A=P(O.x,O.y,R,a),B=P(O.x,O.y,R,b),C=P(O.x,O.y,R,c);
-    $('#dArc').setAttribute('d',arcD(O.x,O.y,R,a,m));
-    $('#dCW').setAttribute('d',wedgeD(O,A,B,36,P(O.x,O.y,R,a+m/2)).d);
-    $('#dIW').setAttribute('d',wedgeD(C,A,B,30,P(O.x,O.y,R,a+m/2)).d);
-    [['dCA',A],['dCB',B],['dOA',A],['dOB',B]].forEach(([id,p])=>{const l=$('#'+id);l.setAttribute('x1',id[1]==='O'?O.x:f1(C.x));l.setAttribute('y1',id[1]==='O'?O.y:f1(C.y));l.setAttribute('x2',f1(p.x));l.setAttribute('y2',f1(p.y));});
-    $('#dDA').setAttribute('cx',f1(A.x));$('#dDA').setAttribute('cy',f1(A.y));
-    $('#dDB').setAttribute('cx',f1(B.x));$('#dDB').setAttribute('cy',f1(B.y));
-    $('#dDC').setAttribute('cx',f1(C.x));$('#dDC').setAttribute('cy',f1(C.y));
-    $('#demoC').textContent=Math.round(m)+'°';
-    $('#demoI').textContent=Math.round(m/2)+'°';
+    if(!visible){running=false;return;}
+    draw(100+60*Math.sin(ts/950));
     requestAnimationFrame(tick);
   }
-  requestAnimationFrame(tick);
+  new IntersectionObserver(es=>{
+    visible=es[0].isIntersecting;
+    if(visible&&!running){running=true;requestAnimationFrame(tick);}
+  }).observe(svg);
 })();
 
 /* ============ MINI LAB (следствия) ============ */
@@ -636,12 +659,14 @@ function miniBuild(mode){
   if(mode==='dia'){
     h+=`<line id="mAB" x1="${f1(mp(180).x)}" y1="170" x2="${f1(mp(0).x)}" y2="170" stroke="#15224e" stroke-width="3"/>
         <line id="mCA" stroke="#15224e" stroke-width="2.4"/><line id="mCB" stroke="#15224e" stroke-width="2.4"/>
-        <path id="mW" fill="#0c86a8" opacity=".85"/><text id="mWt" class="vt" fill="#085d75" text-anchor="middle">90°</text>
+        <path id="mW" fill="#0c86a8" opacity=".85"/><text id="mWt" class="vt" fill="#085d75" text-anchor="middle" dominant-baseline="middle">90°</text>
         ${mDot(180,'A')}${mDot(0,'B')}<circle cx="170" cy="170" r="3" fill="#15224e"/>${mPt('mC','C')}`;
   }else if(mode==='arc'){
     h+=`<path d="${arcD(MO.x,MO.y,MR,210,120)}" fill="none" stroke="#f4600c" stroke-width="7" stroke-linecap="round" opacity=".9"/>
         <g stroke="#15224e" stroke-width="2"><line id="mC1A"/><line id="mC1B"/><line id="mC2A"/><line id="mC2B"/></g>
         <path id="mW1" fill="#0c86a8" opacity=".8"/><path id="mW2" fill="#0c86a8" opacity=".8"/>
+        <text id="mW1t" class="vt" fill="#085d75" text-anchor="middle" dominant-baseline="middle"></text>
+        <text id="mW2t" class="vt" fill="#085d75" text-anchor="middle" dominant-baseline="middle"></text>
         ${mDot(210,'A')}${mDot(330,'B')}${mPt('mC1','C₁')}${mPt('mC2','C₂')}`;
   }else{
     h+=`<polygon id="mPoly" fill="rgba(244,96,12,.06)" stroke="#15224e" stroke-width="2.4"/>
@@ -658,36 +683,31 @@ function miniUpdate(){
     const A=mp(180),B=mp(0),C=mp(MINI.c);
     mPlace($('#mC'),C);
     [['mCA',A],['mCB',B]].forEach(([id,p])=>{const l=$('#'+id);l.setAttribute('x1',f1(C.x));l.setAttribute('y1',f1(C.y));l.setAttribute('x2',f1(p.x));l.setAttribute('y2',f1(p.y));});
-    $('#mW').setAttribute('d',wedgeD(C,A,B,34).d);
-    const t={x:C.x+(MO.x-C.x)*.5,y:C.y+(MO.y-C.y)*.5};
-    const w=$('#mWt');w.setAttribute('x',f1(t.x));w.setAttribute('y',f1(t.y));
-    out.innerHTML=`∠ACB = <b>${Math.round(angBetween(A,C,B))}°</b> — при любом положении C!`;
+    const w=wedgeD(C,A,B,34),v=Math.round(angBetween(A,C,B));
+    $('#mW').setAttribute('d',w.d);
+    setLabel($('#mWt'),C,w,34,v+'°');
+    out.innerHTML=`∠ACB = <b>${v}°</b> — при любом положении C!`;
   }else if(MINI.mode==='arc'){
     const A=mp(210),B=mp(330),M=mp(270),C1=mp(MINI.c1),C2=mp(MINI.c2);
     mPlace($('#mC1'),C1);mPlace($('#mC2'),C2);
     [['mC1A',C1,A],['mC1B',C1,B],['mC2A',C2,A],['mC2B',C2,B]].forEach(([id,f,p])=>{const l=$('#'+id);l.setAttribute('x1',f1(f.x));l.setAttribute('y1',f1(f.y));l.setAttribute('x2',f1(p.x));l.setAttribute('y2',f1(p.y));});
-    $('#mW1').setAttribute('d',wedgeD(C1,A,B,32,M).d);
-    $('#mW2').setAttribute('d',wedgeD(C2,A,B,32,M).d);
-    const v1=Math.round(wedgeD(C1,A,B,32,M).value);
-    out.innerHTML=`∠AC₁B = <b>${v1}°</b> &nbsp;·&nbsp; ∠AC₂B = <b>${v1}°</b> &nbsp;→&nbsp; равны!`;
+    const w1=wedgeD(C1,A,B,32,M),w2=wedgeD(C2,A,B,32,M);
+    const v1=Math.round(w1.value),v2=Math.round(w2.value);
+    $('#mW1').setAttribute('d',w1.d);$('#mW2').setAttribute('d',w2.d);
+    setLabel($('#mW1t'),C1,w1,32,v1+'°');setLabel($('#mW2t'),C2,w2,32,v2+'°');
+    out.innerHTML=`∠AC₁B = <b>${v1}°</b> &nbsp;·&nbsp; ∠AC₂B = <b>${v2}°</b> &nbsp;→&nbsp; равны!`;
   }else{
-    // Режим четырёхугольника (quad)
-    const pts=MINI.q.map(mp); // 4 точки: A(0), B(1), C(2), D(3)
-    if(pts.length===4){
-      ['mQA','mQB','mQC','mQD'].forEach((id,i)=>mPlace($('#'+id),pts[i]));
-      $('#mPoly').setAttribute('points',pts.map(p=>`${f1(p.x)},${f1(p.y)}`).join(' '));
-      // Угол A: между D-A-B
-      const angA=Math.round(angBetween(pts[3],pts[0],pts[1]));
-      // Угол C: между B-C-D
-      const angC=Math.round(angBetween(pts[1],pts[2],pts[3]));
-      const wA=wedgeD(pts[0],pts[3],pts[1],30),wC=wedgeD(pts[2],pts[1],pts[3],30);
-      $('#mQAW').setAttribute('d',wA.d);
-      $('#mQCW').setAttribute('d',wC.d);
-      const lr=36; // чуть дальше радиуса клина (30), чтобы подпись всегда была рядом с ним
-      $('#mQAt').setAttribute('x',f1(pts[0].x+lr*Math.cos(wA.mid)));$('#mQAt').setAttribute('y',f1(pts[0].y+lr*Math.sin(wA.mid)));$('#mQAt').textContent=angA+'°';
-      $('#mQCt').setAttribute('x',f1(pts[2].x+lr*Math.cos(wC.mid)));$('#mQCt').setAttribute('y',f1(pts[2].y+lr*Math.sin(wC.mid)));$('#mQCt').textContent=angC+'°';
-      out.innerHTML=`∠A = <b>${angA}°</b>, ∠C = <b>${angC}°</b> → сумма <b>${angA+angC}°</b>`;
-    }
+    // Режим четырёхугольника: A(0), B(1), C(2), D(3) по кругу
+    const pts=MINI.q.map(mp);
+    ['mQA','mQB','mQC','mQD'].forEach((id,i)=>mPlace($('#'+id),pts[i]));
+    $('#mPoly').setAttribute('points',pts.map(p=>`${f1(p.x)},${f1(p.y)}`).join(' '));
+    const [angA,angB,angC,angD]=[0,1,2,3].map(i=>Math.round(angBetween(pts[(i+3)%4],pts[i],pts[(i+1)%4])));
+    const wA=wedgeD(pts[0],pts[3],pts[1],30),wC=wedgeD(pts[2],pts[1],pts[3],30);
+    $('#mQAW').setAttribute('d',wA.d);
+    $('#mQCW').setAttribute('d',wC.d);
+    setLabel($('#mQAt'),pts[0],wA,30,angA+'°');
+    setLabel($('#mQCt'),pts[2],wC,30,angC+'°');
+    out.innerHTML=`∠A + ∠C = ${angA}° + ${angC}° = <b>${angA+angC}°</b><br>∠B + ∠D = ${angB}° + ${angD}° = <b>${angB+angD}°</b>`;
   }
 }
 function showCase(mode){
@@ -721,9 +741,10 @@ $$('.tab').forEach(t=>t.addEventListener('click',()=>{
     }else{
       const i={mQA:0,mQB:1,mQC:2,mQD:3}[key];if(i===undefined)return;
       const prev=MINI.q[(i+3)%4],next=MINI.q[(i+1)%4];
-      const span=norm360(next-prev),off=norm360(ang-prev);
+      const a2=norm360(2*Math.round(ang/2)); // чётные градусы: иначе углы вида 90,5° округлялись в сумму 181°
+      const span=norm360(next-prev),off=norm360(a2-prev);
       if(off<20||off>span-20)return; // 20° держит соседние точки дальше, чем сумма радиусов их зон захвата
-      MINI.q[i]=ang;
+      MINI.q[i]=a2;
     }
     miniUpdate();
   });
@@ -740,13 +761,14 @@ const lbl=(t,a,rr=124)=>{const p=P(GC.x,GC.y,rr,a);return `<text x="${f1(p.x)}" 
 const seg=(p,q,w=2,da='')=>`<line x1="${f1(p.x)}" y1="${f1(p.y)}" x2="${f1(q.x)}" y2="${f1(q.y)}" stroke="#15224e" stroke-width="${w}" ${da?`stroke-dasharray="${da}"`:''} stroke-linecap="round"/>`;
 const fw=(v,p1,p2,r,fill,tgt)=>`<path d="${wedgeD(v,p1,p2,r,tgt).d}" fill="${fill}" opacity=".82"/>`;
 const vt=(p,t,c)=>`<text x="${f1(p.x)}" y="${f1(p.y)}" text-anchor="middle" dominant-baseline="middle" class="fv" fill="${c}">${t}</text>`;
+const wl=(v,p1,p2,r,tgt,t,c)=>vt(wedgeLabel(v,wedgeD(v,p1,p2,r,tgt),r,t,15),t,c);
 const oTxt=`<text x="158" y="167" class="fl" fill="#15224e">O</text>`;
 
 const makers={
   ci(){
     const al=2*rnd(20,80),aA=205,aB=aA+al,aC=aB+(360-al)/2;
     const A=gp(aA),B=gp(aB),C=gp(aC),M=gp(aA+al/2);
-    const svg=`<svg class="tsvg" viewBox="0 0 300 300">${fBase}${fw(GC,A,B,40,'#f4600c',M)}${seg(GC,A)}${seg(GC,B)}${seg(C,A)}${seg(C,B)}${fw(C,A,B,28,'#0c86a8',M)}${dot(A)}${dot(B)}${dot(C)}${lbl('A',aA)}${lbl('B',aB)}${lbl('C',aC)}${oTxt}${vt(P(GC.x,GC.y,64,aA+al/2),al+'°','#b34300')}${vt({x:C.x+(M.x-C.x)*.5,y:C.y+(M.y-C.y)*.5},'?','#085d75')}</svg>`;
+    const svg=`<svg class="tsvg" viewBox="0 0 300 300">${fBase}${fw(GC,A,B,40,'#f4600c',M)}${seg(GC,A)}${seg(GC,B)}${seg(C,A)}${seg(C,B)}${fw(C,A,B,28,'#0c86a8',M)}${dot(A)}${dot(B)}${dot(C)}${lbl('A',aA)}${lbl('B',aB)}${lbl('C',aC)}${oTxt}${wl(GC,A,B,40,M,al+'°','#b34300')}${wl(C,A,B,28,M,'?','#085d75')}</svg>`;
     return{tag:'центральный → вписанный',svg,answer:al/2,
       text:`Центральный угол <b>∠AOB = ${al}°</b>. Найдите вписанный угол <b>∠ACB</b>, опирающийся на ту же дугу.`,
       hint:'Вписанный угол равен половине центрального, если они опираются на одну дугу.',
@@ -755,42 +777,40 @@ const makers={
   ic(){
     const be=rnd(28,80),aA=205,aB=aA+2*be,aC=aB+(360-2*be)/2;
     const A=gp(aA),B=gp(aB),C=gp(aC),M=gp(aA+be);
-    const svg=`<svg class="tsvg" viewBox="0 0 300 300">${fBase}${fw(GC,A,B,40,'#f4600c',M)}${seg(GC,A)}${seg(GC,B)}${seg(C,A)}${seg(C,B)}${fw(C,A,B,28,'#0c86a8',M)}${dot(A)}${dot(B)}${dot(C)}${lbl('A',aA)}${lbl('B',aB)}${lbl('C',aC)}${oTxt}${vt(P(GC.x,GC.y,64,aA+be),'?','#b34300')}${vt({x:C.x+(M.x-C.x)*.5,y:C.y+(M.y-C.y)*.5},be+'°','#085d75')}</svg>`;
+    const svg=`<svg class="tsvg" viewBox="0 0 300 300">${fBase}${fw(GC,A,B,40,'#f4600c',M)}${seg(GC,A)}${seg(GC,B)}${seg(C,A)}${seg(C,B)}${fw(C,A,B,28,'#0c86a8',M)}${dot(A)}${dot(B)}${dot(C)}${lbl('A',aA)}${lbl('B',aB)}${lbl('C',aC)}${oTxt}${wl(GC,A,B,40,M,'?','#b34300')}${wl(C,A,B,28,M,be+'°','#085d75')}</svg>`;
     return{tag:'вписанный → центральный',svg,answer:2*be,
       text:`Вписанный угол <b>∠ACB = ${be}°</b>. Найдите центральный угол <b>∠AOB</b>, опирающийся на ту же дугу.`,
       hint:'Центральный угол вдвое больше вписанного, опирающегося на ту же дугу.',
       sol:`∠AOB = 2·∠ACB = 2·${be}° = <b>${2*be}°</b>.`};
   },
   dia(){
-    const x=rnd(18,72),aC=rnd(40,140);
+    const x=rnd(18,72),aC=2*x;
     const A=gp(180),B=gp(0),C=gp(aC);
     const u={x:(A.x-C.x),y:(A.y-C.y)},l1=Math.hypot(u.x,u.y);u.x/=l1;u.y/=l1;
     const v={x:(B.x-C.x),y:(B.y-C.y)},l2=Math.hypot(v.x,v.y);v.x/=l2;v.y/=l2;
     const s=12,ra=`<path d="M ${f1(C.x+u.x*s)} ${f1(C.y+u.y*s)} L ${f1(C.x+u.x*s+v.x*s)} ${f1(C.y+u.y*s+v.y*s)} L ${f1(C.x+v.x*s)} ${f1(C.y+v.y*s)}" fill="none" stroke="#15224e" stroke-width="1.8"/>`;
-    const pA={x:A.x+((B.x+C.x)/2-A.x)*.42,y:A.y+((B.y+C.y)/2-A.y)*.42};
-    const pB={x:B.x+((A.x+C.x)/2-B.x)*.42,y:B.y+((A.y+C.y)/2-B.y)*.42};
-    const svg=`<svg class="tsvg" viewBox="0 0 300 300">${fBase}${seg(A,B,2.5)}${seg(C,A)}${seg(C,B)}${ra}${fw(A,B,C,26,'#f4600c')}${fw(B,A,C,26,'#0c86a8')}${dot(A)}${dot(B)}${dot(C)}${lbl('A',180)}${lbl('B',0)}${lbl('C',aC)}${vt(pA,x+'°','#b34300')}${vt(pB,'?','#085d75')}</svg>`;
+    const svg=`<svg class="tsvg" viewBox="0 0 300 300">${fBase}${seg(A,B,2.5)}${seg(C,A)}${seg(C,B)}${ra}${fw(A,B,C,26,'#f4600c')}${fw(B,A,C,26,'#0c86a8')}${dot(A)}${dot(B)}${dot(C)}${lbl('A',180)}${lbl('B',0)}${lbl('C',aC)}${wl(A,B,C,26,null,x+'°','#b34300')}${wl(B,A,C,26,null,'?','#085d75')}</svg>`;
     return{tag:'угол на диаметре',svg,answer:90-x,
       text:`<b>AB — диаметр</b> окружности. Угол <b>∠CAB = ${x}°</b>. Найдите угол <b>∠CBA</b>.`,
       hint:'Вписанный угол, опирающийся на диаметр, равен 90°. Дальше — сумма углов треугольника.',
       sol:`∠ACB = 90° (опирается на диаметр). Значит ∠CBA = 180° − 90° − ${x}° = <b>${90-x}°</b>.`};
   },
   arc(){
-    const y=rnd(25,70),c1=390+rnd(0,50),c2=472+rnd(0,66);
-    const A=gp(210),B=gp(330),C1=gp(c1),C2=gp(c2),M=gp(270);
-    const svg=`<svg class="tsvg" viewBox="0 0 300 300">${fBase}<path d="${arcD(150,150,100,210,120)}" fill="none" stroke="#f4600c" stroke-width="5" stroke-linecap="round" opacity=".85"/>${seg(C1,A)}${seg(C1,B)}${seg(C2,A)}${seg(C2,B)}${fw(C1,A,B,26,'#0c86a8',M)}${fw(C2,A,B,26,'#0c86a8',M)}${dot(A)}${dot(B)}${dot(C1,'#0c86a8')}${dot(C2,'#0c86a8')}${lbl('A',210)}${lbl('B',330)}${lbl('C₁',c1)}${lbl('C₂',c2)}${vt({x:C1.x+(M.x-C1.x)*.48,y:C1.y+(M.y-C1.y)*.48},y+'°','#085d75')}${vt({x:C2.x+(M.x-C2.x)*.48,y:C2.y+(M.y-C2.y)*.48},'?','#085d75')}</svg>`;
+    const y=rnd(25,70),aA=270-y,aB=270+y,L=360-2*y;
+    const c1=aB+Math.round(L*(.15+Math.random()*.25)),c2=aB+Math.round(L*(.6+Math.random()*.25));
+    const A=gp(aA),B=gp(aB),C1=gp(c1),C2=gp(c2),M=gp(270);
+    const svg=`<svg class="tsvg" viewBox="0 0 300 300">${fBase}<path d="${arcD(150,150,100,aA,2*y)}" fill="none" stroke="#f4600c" stroke-width="5" stroke-linecap="round" opacity=".85"/>${seg(C1,A)}${seg(C1,B)}${seg(C2,A)}${seg(C2,B)}${fw(C1,A,B,26,'#0c86a8',M)}${fw(C2,A,B,26,'#0c86a8',M)}${dot(A)}${dot(B)}${dot(C1,'#0c86a8')}${dot(C2,'#0c86a8')}${lbl('A',aA)}${lbl('B',aB)}${lbl('C₁',c1)}${lbl('C₂',c2)}${wl(C1,A,B,26,M,y+'°','#085d75')}${wl(C2,A,B,26,M,'?','#085d75')}</svg>`;
     return{tag:'углы на одной дуге',svg,answer:y,
       text:`Углы ∠AC₁B и ∠AC₂B опираются на <b>одну и ту же дугу AB</b>. Если <b>∠AC₁B = ${y}°</b>, чему равен <b>∠AC₂B</b>?`,
       hint:'Вписанные углы, опирающиеся на одну дугу, равны между собой.',
       sol:`Оба угла опираются на одну дугу AB, поэтому ∠AC₂B = ∠AC₁B = <b>${y}°</b>.`};
   },
   quad(){
-    const aA=100,aB=aA+55+rnd(0,50),aC=aB+45+rnd(0,50),aD=aA-(45+rnd(0,50));
+    const aA=100,aB=aA+55+rnd(0,50),aC=aB+45+rnd(0,50);
+    let aD=aA-(45+rnd(0,50));if((aD+360-aB)%2)aD--; // чётная дуга → ∠A целый, чертёж совпадает с условием
     const A=gp(aA),B=gp(aB),C=gp(aC),D=gp(aD);
     const given=Math.round(angBetween(D,A,B));
-    const pA={x:A.x+(GC.x-A.x)*.36,y:A.y+(GC.y-A.y)*.36};
-    const pC={x:C.x+(GC.x-C.x)*.36,y:C.y+(GC.y-C.y)*.36};
-    const svg=`<svg class="tsvg" viewBox="0 0 300 300">${fBase}<polygon points="${[A,B,C,D].map(p=>`${f1(p.x)},${f1(p.y)}`).join(' ')}" fill="rgba(244,96,12,.06)" stroke="#15224e" stroke-width="2.2"/>${fw(A,D,B,24,'#f4600c')}${fw(C,B,D,24,'#0c86a8')}${dot(A)}${dot(B)}${dot(C)}${dot(D)}${lbl('A',aA)}${lbl('B',aB)}${lbl('C',aC)}${lbl('D',aD)}${vt(pA,given+'°','#b34300')}${vt(pC,'?','#085d75')}</svg>`;
+    const svg=`<svg class="tsvg" viewBox="0 0 300 300">${fBase}<polygon points="${[A,B,C,D].map(p=>`${f1(p.x)},${f1(p.y)}`).join(' ')}" fill="rgba(244,96,12,.06)" stroke="#15224e" stroke-width="2.2"/>${fw(A,D,B,24,'#f4600c')}${fw(C,B,D,24,'#0c86a8')}${dot(A)}${dot(B)}${dot(C)}${dot(D)}${lbl('A',aA)}${lbl('B',aB)}${lbl('C',aC)}${lbl('D',aD)}${wl(A,D,B,24,null,given+'°','#b34300')}${wl(C,B,D,24,null,'?','#085d75')}</svg>`;
     return{tag:'вписанный четырёхугольник',svg,answer:180-given,
       text:`Четырёхугольник <b>ABCD</b> вписан в окружность. <b>∠DAB = ${given}°</b>. Найдите <b>∠BCD</b>.`,
       hint:'Противоположные углы вписанного четырёхугольника в сумме дают 180°.',
@@ -800,7 +820,7 @@ const makers={
     const al=2*rnd(40,80),aA=210,aB=aA+al;
     const aC=Math.max(aA+8,Math.min(aB-8,aA+al/2+rnd(-Math.floor(al/4),Math.floor(al/4))));
     const A=gp(aA),B=gp(aB),C=gp(aC),Mmin=gp(aA+al/2),Mmaj=P(GC.x,GC.y,GR,aB+(360-al)/2);
-    const svg=`<svg class="tsvg" viewBox="0 0 300 300">${fBase}<path d="${arcD(150,150,100,aB,360-al)}" fill="none" stroke="#0c86a8" stroke-width="4" stroke-dasharray="7 7" opacity=".8"/>${fw(GC,A,B,40,'#f4600c',Mmin)}${seg(GC,A)}${seg(GC,B)}${seg(C,A)}${seg(C,B)}${fw(C,A,B,28,'#0c86a8',Mmaj)}${dot(A)}${dot(B)}${dot(C,'#0c86a8')}${lbl('A',aA)}${lbl('B',aB)}${lbl('C',aC)}${oTxt}${vt(P(GC.x,GC.y,64,aA+al/2),al+'°','#b34300')}${vt({x:C.x+(Mmaj.x-C.x)*.42,y:C.y+(Mmaj.y-C.y)*.42},'?','#085d75')}</svg>`;
+    const svg=`<svg class="tsvg" viewBox="0 0 300 300">${fBase}<path d="${arcD(150,150,100,aB,360-al)}" fill="none" stroke="#0c86a8" stroke-width="4" stroke-dasharray="7 7" opacity=".8"/>${fw(GC,A,B,40,'#f4600c',Mmin)}${seg(GC,A)}${seg(GC,B)}${seg(C,A)}${seg(C,B)}${fw(C,A,B,28,'#0c86a8',Mmaj)}${dot(A)}${dot(B)}${dot(C,'#0c86a8')}${lbl('A',aA)}${lbl('B',aB)}${lbl('C',aC)}${oTxt}${wl(GC,A,B,40,Mmin,al+'°','#b34300')}${wl(C,A,B,28,Mmaj,'?','#085d75')}</svg>`;
     return{tag:'большая дуга',svg,answer:180-al/2,
       text:`Меньший центральный угол <b>∠AOB = ${al}°</b>. Точка C лежит на <b>малой</b> дуге AB. Найдите вписанный угол <b>∠ACB</b>.`,
       hint:'∠ACB опирается на БОЛЬШУЮ дугу AB. Её мера равна 360° − α.',
@@ -813,7 +833,7 @@ const praise=['Так держать! 🎉','Идеально! ✨','Теоре�
 const wrongMsg=['Пока неверно — попробуйте ещё раз.','Не совсем. Вспомните: связь углов — «×2» или «÷2».','Мимо! Перечитайте подсказку под задачей.'];
 const G={cur:null,wrong:0,done:false,num:0,solved:0,tries:0,streak:0,last:''};
 
-function newTask(){
+function newTask(focus=true){
   const diff=document.querySelector('input[name="diff"]:checked').value;
   const pool=pools[diff];
   let key;do{key=pool[rnd(0,pool.length-1)];}while(key===G.last&&pool.length>1);
@@ -825,8 +845,8 @@ function newTask(){
   $('#taskFig').innerHTML=G.cur.svg;
   const inp=$('#ansInp');inp.value='';inp.disabled=false;inp.classList.remove('shake');
   $('#fb').hidden=true;$('#fb').innerHTML='';
-  $('#btnNext').hidden=true;$('#btnCheck').textContent='Проверить';
-  inp.focus();
+  $('#btnNext').hidden=true;$('#btnCheck').textContent='Проверить';$('#btnCheck').disabled=false;
+  if(focus)inp.focus();
 }
 function updStats(){
   $('#stSolved').textContent=G.solved;
@@ -838,12 +858,13 @@ $('#ansForm').addEventListener('submit',e=>{
   e.preventDefault();
   if(G.done){newTask();return;}
   const raw=$('#ansInp').value.trim().replace(',','.');
-  if(!raw){$('#ansInp').classList.add('shake');setTimeout(()=>$('#ansInp').classList.remove('shake'),450);return;}
-  const v=parseFloat(raw);G.tries++;
+  const v=parseFloat(raw);
+  if(!raw||isNaN(v)){const inp=$('#ansInp');inp.classList.remove('shake');void inp.offsetWidth;inp.classList.add('shake');return;}
+  G.tries++;
   const fb=$('#fb');fb.hidden=false;
   if(Math.abs(v-G.cur.answer)<0.01){
     G.solved++;G.streak++;G.done=true;
-    $('#ansInp').disabled=true;$('#btnCheck').textContent='✔ Решена';$('#btnNext').hidden=false;
+    $('#ansInp').disabled=true;$('#btnCheck').textContent='✔ Решена';$('#btnCheck').disabled=true;$('#btnNext').hidden=false;
     fb.innerHTML=`<div class="fb-ok">${praise[rnd(0,praise.length-1)]} Ответ: ${fmt(G.cur.answer)}°</div><div class="fb-exp">📖 ${G.cur.sol}</div>`;
     const card=$('#taskCard');card.classList.remove('win');void card.offsetWidth;card.classList.add('win');
   }else{
@@ -857,14 +878,15 @@ $('#ansForm').addEventListener('submit',e=>{
 });
 $('#btnSol').addEventListener('click',()=>{
   if(G.done)return;
-  G.done=true;$('#ansInp').disabled=true;$('#btnCheck').textContent='—';$('#btnNext').hidden=false;
+  G.done=true;G.streak=0;$('#ansInp').disabled=true;$('#btnCheck').textContent='—';$('#btnCheck').disabled=true;$('#btnNext').hidden=false;
+  updStats();
   const fb=$('#fb');fb.hidden=false;
   fb.innerHTML=`<div class="fb-sol">📖 Решение: ${G.cur.sol}</div>`;
 });
-$('#btnNext').addEventListener('click',newTask);
-$('#btnNew').addEventListener('click',newTask);
-$$('input[name="diff"]').forEach(r=>r.addEventListener('change',newTask));
-// newTask(); // Убран автозапуск при загрузке, чтобы не скроллило страницу
+$('#btnNext').addEventListener('click',()=>newTask());
+$('#btnNew').addEventListener('click',()=>newTask());
+$$('input[name="diff"]').forEach(r=>r.addEventListener('change',()=>newTask()));
+newTask(false); // первая задача сразу, но без фокуса — иначе страница прокручивалась к полю ответа
 
 /* ============ reveals ============ */
 const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}}),{threshold:.12});
