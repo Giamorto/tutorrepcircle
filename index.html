@@ -216,25 +216,18 @@
   .fb-exp,.fb-sol{background:var(--paper);border:2.5px solid var(--ink);border-radius:12px;padding:12px 16px;font-size:.97rem}
   .fb-sol b,.fb-exp b{color:var(--teal-d)}
 
-  /* ---------- CHEATSHEET / FOOTER ---------- */
-  .cheat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
-  .cheat{background:#fff;border:3px solid var(--ink);border-radius:14px;padding:20px;box-shadow:6px 6px 0 rgba(21,34,78,.16);transition:.2s}
-  .cheat:hover{box-shadow:8px 10px 0 rgba(21,34,78,.22)}
-  .cheat .g{font-family:'Unbounded';font-weight:900;font-size:1.7rem;display:block;margin-bottom:8px}
-  .cheat:nth-child(1){border-top:10px solid var(--orange)} .cheat:nth-child(2){border-top:10px solid var(--teal)}
-  .cheat:nth-child(3){border-top:10px solid var(--sun)} .cheat:nth-child(4){border-top:10px solid var(--green)}
+  /* ---------- FOOTER ---------- */
   footer{border-top:3px solid var(--ink);padding:34px 0;text-align:center;color:var(--ink-soft);font-size:.9rem;background:#fff}
   footer b{color:var(--ink)}
 
   @media(max-width:960px){
     .open-grid,.lab-grid,.case-grid,.prac-grid,.def-grid{grid-template-columns:1fr}
-    .cheat-grid{grid-template-columns:1fr 1fr}
     .nav-links a:not(.nav-cta){display:none}
     .demo-card{max-width:480px}
     .board{padding:28px 22px}
     .def .fig{float:none;margin:0 auto 14px;display:block}
   }
-  @media(max-width:560px){.cheat-grid{grid-template-columns:1fr}.ro-v{font-size:1.6rem}}
+  @media(max-width:560px){.ro-v{font-size:1.6rem}}
   @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 </head>
@@ -470,19 +463,6 @@
         </form>
         <div class="p-fb" id="fb" hidden></div>
       </div>
-    </div>
-  </div>
-</section>
-
-<!-- ======================= CHEATSHEET ======================= -->
-<section id="cheat" style="padding-top:20px">
-  <div class="container">
-    <div class="sec-head reveal"><span class="sec-num">✂️</span><h2>Шпаргалка: что вырезать и приклеить в тетрадь</h2></div>
-    <div class="cheat-grid">
-      <div class="cheat reveal"><span class="g" style="color:var(--orange)">⌢=</span>Центральный угол равен мере дуги, которую он вырезает.</div>
-      <div class="cheat reveal" style="transition-delay:.08s"><span class="g" style="color:var(--teal)">½</span>Вписанный угол — половина центрального, опирающегося на ту же дугу.</div>
-      <div class="cheat reveal" style="transition-delay:.16s"><span class="g" style="color:#c99a00">90°</span>Вписанный угол, опирающийся на диаметр, — прямой.</div>
-      <div class="cheat reveal" style="transition-delay:.24s"><span class="g" style="color:var(--green)">180°</span>В вписанном четырёхугольнике противоположные углы в сумме дают 180°.</div>
     </div>
   </div>
 </section>
